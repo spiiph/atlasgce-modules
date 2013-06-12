@@ -1,0 +1,1 @@
+*       autofs.<%= domain %>:/export/<%= name %>/&

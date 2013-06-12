@@ -1,0 +1,34 @@
+set exportpath = <%= @storage_path %>
+set head = <%= @redirector %>
+set localroot = <%= @oss_localroot %>
+
+all.export $(exportpath)
+all.role server
+all.role manager if $(head)
+all.manager $(head) 1213
+xrd.port 1094 if exec xrootd
+
+oss.localroot $(localroot)
+
+xrootd.chksum max 3 adler32 /usr/bin/xrdadler32
+
+xrootd.seclib /usr/lib64/libXrdSec.so
+# this specify that we use the 'unix' authentication module, additional one
+# can be specified.
+sec.protocol /usr/lib64 unix
+
+# this is the authorization file
+<% if @auth_file -%>
+acc.authdb <%= @auth_file %>
+<% end -%>
+ofs.authorize
+
+all.export $(exportpath) r/w stage purge nocheck nodread
+
+cms.prep echo
+
+# The adminpath and pidpath variables indicate where the pid and various
+# IPC files should be placed
+#
+all.adminpath <%= @homedir %>
+all.pidpath <%= @rundir %>

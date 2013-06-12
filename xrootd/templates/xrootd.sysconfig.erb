@@ -1,0 +1,21 @@
+XROOTD_USER=<%= @user %>
+XROOTD_GROUP=<%= @group %>
+
+## xrootd options (from http://xrootd.org/doc/prod/xrd_config.htm)
+# -k Keep no more than 7 old log files
+# -l where the log file is kept. The file is closed at midnight,
+#    renamed to have a date suffix (i.e., fn.yyyymmdd) and possible
+#    sequence number (i.e. fn.yyyymmdd.n), and a new log file is opened.
+#    This allows you to write an external time-driven script that
+#    rotates xrootd log files.
+# -c which config file to use
+XROOTD_DEFAULT_OPTIONS="-k 7 -l <%= @logdir %>/xrootd.log -c <%= @config %>"
+XROOTD_CNS_OPTIONS="-k 7 -l <%= @logdir %>/xrootd.log -c <%= @config %>"
+CMSD_DEFAULT_OPTIONS="-k 7 -l <%= @logdir %>/cmsd.log -c <%= @config %>"
+FRMD_DEFAULT_OPTIONS="-k 7 -l <%= @logdir %>/frmd.log -c <%= @config %>"
+
+#XROOTD_INSTANCES="default cns"
+XROOTD_INSTANCES="default"
+CMSD_INSTANCES="default"
+FRMD_INSTANCES="default"
+

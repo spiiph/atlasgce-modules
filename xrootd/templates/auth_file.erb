@@ -1,0 +1,11 @@
+# This means that all the users have full access to the /atlas subdirectory
+u * <%= @storage_path %> a
+
+# This means that all the users have full access to their private dirs
+#u = <%= @storage_path %>/local/@=/ a
+
+# This means that this privileged user can do everything
+# You need at least one user like that, in order to create the
+# private dir for each user willing to store his data in the facility
+#u xrootd <%= @storage_path %> a
+#u atlasadmin <%= @storage_path %> a
