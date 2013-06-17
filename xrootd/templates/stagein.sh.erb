@@ -1,0 +1,77 @@
+#!/usr/bin/env sh
+
+#
+#  Note this script expects 2 input parameters
+#
+#  1 - xrootd source file name
+#  2 - xrootd dets file name
+#  3 - xrootd cluster ID
+
+log()
+{
+  echo "LOG: $1"
+  echo $1 >> $logfile
+}
+
+# create logfile
+logfile=$(mktemp -q /tmp/$(basename $0).log.XXXXXX)
+if [ $? -ne 0 ]
+then
+  echo "Can't create log file"
+  exit 1
+fi
+
+if [ $# -ne 3 ]
+then
+  log "Incorrect number of parameters. Got $#, expected 3. ($*)"
+  exit 85
+fi
+
+xrdport=1094
+
+global_redirect=<%= @global_redirector %>:<%= @xrdport %>
+local_svr=$(hostname):<%= @xrdport %>
+
+gfn=$1
+local_dest=$2
+cid=$3
+
+remote_uri="root://${global_redirect}/${gfn}?tried=+${cid}"
+target_uri="root://${local_svr}/${gfn}"
+
+log "Initializing stage-in: $0 - $(date)"
+log "gfn: $gfn"
+log "local_dest: $local_dest"
+log "remote_uri: $remote_uri"
+log "target_uri: $target_uri"
+
+# Check if the file exists within the federation
+lookup=$(xrd $global_redirect locatesingle $gfn | grep Location | sed "s/.*'\(.*\)'/\1/")
+
+if [ $lookup = "" ]
+then
+  log "Failed to locate $gfn through $global_redirect"
+  mv -fv $logfile ${local_dest}.fail
+  exit 2
+fi
+
+# Get the file via xrdcp
+log "Running command: xrdcp -x -f -s ${remote_uri} ${target_uri} "
+xrdcp -d 1 -x -f -s $remote_uri $target_uri 2>&1 | tee $logfile
+if [ $? -ne 0 ]
+then
+  log "Failed to donwload $remote_uri"
+  mv -fv $logfile ${local_dest}.fail
+  exit 5
+fi
+
+log "xrdadler32 $local_dest"
+xrdadler32 $local_dest >> $logfile
+
+log "xrdadler32 $remote_uri"
+xrdadler32 $remote_uri >> $logfile
+
+# TODO: Add xrdadler32 check; break if checksums are not equal. (If
+# necessary.)
+
+exit 0

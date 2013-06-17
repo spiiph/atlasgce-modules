@@ -32,34 +32,53 @@ class xrootd::client (
   $redirector,
   $storage_path = '/atlas',
   $oss_localroot = '/data/scratch',
+  $global_redirector = 'atlas-xrd-eu.cern.ch',
+  $xrdport = 1094,
+  $trace = undef,
   $config = '/etc/xrootd/xrootd.cfg',
   $sysconfig = '/etc/sysconfig/xrootd',
-  $auth_file = '/etc/xrootd/auth_file'
+  $auth_file = '/etc/xrootd/auth_file',
+  $stagein = '/etc/xrootd/stagein.sh'
   ) inherits xrootd
 {
   file { $sysconfig:
+    owner => 'root',
+    group => 'root',
     ensure  => present,
     content => template('xrootd/xrootd.sysconfig.erb'),
     require => Class['xrootd'],
   }
 
   file { $config:
+    owner => $user,
+    group => $group,
     ensure  => present,
     content => template('xrootd/xrootd.cfg.erb'),
     require => Class['xrootd'],
   }
 
   file { $auth_file:
+    owner => $user,
+    group => $group,
     ensure => present,
     content => template('xrootd/auth_file.erb'),
     require => Class['xrootd'],
   }
 
-  file { [$oss_localroot, "$oss_localroot$storage_path"]:
-    ensure => directory,
-    recurse => true,
+  file { $stagein:
     owner => $user,
     group => $group,
+    mode => 0755,
+    ensure => present,
+    content => template('xrootd/stagein.sh.erb'),
+    require => Class['xrootd'],
+  }
+
+  file { [$oss_localroot, "$oss_localroot$storage_path"]:
+    owner => $user,
+    group => $group,
+    ensure => directory,
+    recurse => true,
     require => Class['xrootd'],
   }
 
@@ -73,6 +92,20 @@ class xrootd::client (
 
   # Start the cmsd service
   service { 'cmsd':
+    ensure => running,
+    enable => true,
+    subscribe => File[$sysconfig, $config],
+    require => File["$oss_localroot$storage_path"],
+   }
+
+  service { 'frm_xfrd':
+    ensure => running,
+    enable => true,
+    subscribe => File[$sysconfig, $config],
+    require => File["$oss_localroot$storage_path"],
+   }
+
+  service { 'frm_purged':
     ensure => running,
     enable => true,
     subscribe => File[$sysconfig, $config],

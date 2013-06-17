@@ -6,7 +6,7 @@ all.export $(exportpath)
 all.role server
 all.role manager if $(head)
 all.manager $(head) 1213
-xrd.port 1094 if exec xrootd
+xrd.port <%= @xrdport %> if exec xrootd
 
 oss.localroot $(localroot)
 
@@ -27,8 +27,19 @@ all.export $(exportpath) r/w stage purge nocheck nodread
 
 cms.prep echo
 
+oss.xfr deny 10m
+frm.xfr.copycmd in stats <%= @stagein %> $SRC $DST $CID
+
 # The adminpath and pidpath variables indicate where the pid and various
 # IPC files should be placed
 #
 all.adminpath <%= @homedir %>
 all.pidpath <%= @rundir %>
+
+<% if @trace -%>
+ofs.trace all
+xrd.trace all
+cms.trace all
+oss.trace all
+<% end -%>
+
