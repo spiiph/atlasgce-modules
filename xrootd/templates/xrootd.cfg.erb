@@ -28,7 +28,8 @@ all.export $(exportpath) r/w stage purge nocheck nodread
 cms.prep echo
 
 oss.xfr deny 10m
-frm.xfr.copycmd in stats <%= @stagein %> $SRC $DST $CID
+#frm.xfr.copycmd in stats <%= @stagein %> $SRC $DST $CID
+frm.xfr.copycmd in stats noalloc <%= @stagein %> $SRC $DST $CID
 
 # The adminpath and pidpath variables indicate where the pid and various
 # IPC files should be placed

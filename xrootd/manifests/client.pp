@@ -86,7 +86,7 @@ class xrootd::client (
   service { 'xrootd':
     ensure => running,
     enable => true,
-    subscribe => File[$sysconfig, $config],
+    subscribe => File[$sysconfig, $config, $auth_file],
     require => File["$oss_localroot$storage_path"],
    }
 
@@ -94,21 +94,21 @@ class xrootd::client (
   service { 'cmsd':
     ensure => running,
     enable => true,
-    subscribe => File[$sysconfig, $config],
+    subscribe => File[$sysconfig, $config, $auth_file],
     require => File["$oss_localroot$storage_path"],
    }
 
   service { 'frm_xfrd':
     ensure => running,
     enable => true,
-    subscribe => File[$sysconfig, $config],
+    subscribe => File[$sysconfig, $config, $stagein],
     require => File["$oss_localroot$storage_path"],
    }
 
   service { 'frm_purged':
     ensure => running,
     enable => true,
-    subscribe => File[$sysconfig, $config],
+    subscribe => File[$sysconfig, $config, $stagein],
     require => File["$oss_localroot$storage_path"],
    }
 }

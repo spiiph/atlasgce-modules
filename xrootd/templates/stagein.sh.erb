@@ -29,49 +29,51 @@ fi
 
 xrdport=1094
 
-global_redirect=<%= @global_redirector %>:<%= @xrdport %>
+glrd=<%= @global_redirector %>:<%= @xrdport %>
 local_svr=$(hostname):<%= @xrdport %>
 
-gfn=$1
-local_dest=$2
+src=$1
+dst=$2
 cid=$3
 
-remote_uri="root://${global_redirect}/${gfn}?tried=+${cid}"
-target_uri="root://${local_svr}/${gfn}"
+remote_uri="root://${glrd}/${src}?tried=+${cid}"
+#target_uri="root://${local_svr}/${local_dest}"
 
 log "Initializing stage-in: $0 - $(date)"
-log "gfn: $gfn"
-log "local_dest: $local_dest"
+log "src: $src"
+log "dst: $dst"
 log "remote_uri: $remote_uri"
-log "target_uri: $target_uri"
+#log "target_uri: $target_uri"
 
 # Check if the file exists within the federation
-lookup=$(xrd $global_redirect locatesingle $gfn | grep Location | sed "s/.*'\(.*\)'/\1/")
+lookup=$(xrd $glrd locatesingle $src | grep Location | sed "s/.*'\(.*\)'/\1/")
 
 if [ $lookup = "" ]
 then
-  log "Failed to locate $gfn through $global_redirect"
-  mv -fv $logfile ${local_dest}.fail
+  log "Failed to locate $src through $glrd"
+  mv -fv $logfile ${dst}.fail
   exit 2
 fi
 
 # Get the file via xrdcp
-log "Running command: xrdcp -x -f -s ${remote_uri} ${target_uri} "
-xrdcp -d 1 -x -f -s $remote_uri $target_uri 2>&1 | tee $logfile
+log "Running command: xrdcp -d 1 -f -s ${remote_uri} ${dst}"
+xrdcp -d 1 -f -s $remote_uri $dst 2>&1 | tee -a $logfile
 if [ $? -ne 0 ]
 then
-  log "Failed to donwload $remote_uri"
-  mv -fv $logfile ${local_dest}.fail
+  log "Failed to download $remote_uri"
+  mv -fv $logfile ${dst}.fail
   exit 5
 fi
 
-log "xrdadler32 $local_dest"
-xrdadler32 $local_dest >> $logfile
-
-log "xrdadler32 $remote_uri"
-xrdadler32 $remote_uri >> $logfile
-
 # TODO: Add xrdadler32 check; break if checksums are not equal. (If
 # necessary.)
+
+#log "xrdadler32 $local_dest"
+#xrdadler32 $local_dest | tee -a $logfile
+#
+#log "xrdadler32 $remote_uri"
+#xrdadler32 $remote_uri | tee -a $logfile
+
+#rm -f $logfile
 
 exit 0

@@ -10,10 +10,11 @@ XROOTD_GROUP=<%= @group %>
 #    rotates xrootd log files.
 # -c which config file to use
 XROOTD_DEFAULT_OPTIONS="-k 7 -l <%= @logdir %>/xrootd.log -c <%= @config %>"
-XROOTD_CNS_OPTIONS="-k 7 -l <%= @logdir %>/xrootd.log -c <%= @config %>"
 CMSD_DEFAULT_OPTIONS="-k 7 -l <%= @logdir %>/cmsd.log -c <%= @config %>"
-FRMD_DEFAULT_OPTIONS="-k 7 -l <%= @logdir %>/frmd.log -c <%= @config %>"
+XFRD_DEFAULT_OPTIONS="-k 7 -l <%= @logdir %>/xfrd.log -c <%= @config %>"
+PURD_DEFAULT_OPTIONS="-k 7 -l <%= @logdir %>/purd.log -c <%= @config %>"
 
 XROOTD_INSTANCES="default"
 CMSD_INSTANCES="default"
-FRMD_INSTANCES="default"
+XFRD_INSTANCES="default"
+PURD_INSTANCES="default"
