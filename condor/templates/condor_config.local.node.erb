@@ -1,0 +1,60 @@
+# Worker node setup
+CONDOR_HOST = <%= @head %>
+COLLECTOR_NAME = Condor Node at $(FULL_HOSTNAME)
+
+START = TRUE
+SUSPEND = FALSE
+PREEMPT = FALSE
+KILL = FALSE
+RANK = 0
+CLAIM_WORKLIFE = 3600
+
+DAEMON_LIST = MASTER, STARTD, SHARED_PORT
+UID_DOMAIN = <%= @domain %>
+
+# Networking (Use shared port)
+COLLECTOR_HOST=$(CONDOR_HOST):29660
+UPDATE_COLLECTOR_WITH_TCP = True
+UPDATE_INTERVAL = 30
+CCB_ADDRESS = $(COLLECTOR_HOST)
+PRIVATE_NETWORK_NAME = <%= @domain %>
+HIGHPORT = 30000
+LOWPORT = 20000
+USE_SHARED_PORT = TRUE
+DAEMON_LIST =  $(DAEMON_LIST) SHARED_PORT
+
+
+# Security
+# Use password security.
+
+ALLOW_WRITE = condor_pool@*
+SEC_DEFAULT_AUTHENTICATION = REQUIRED
+SEC_DEFAULT_AUTHENTICATION_METHODS = PASSWORD, FS
+SEC_PASSWORD_FILE = <%= @password_file %>
+SEC_DEFAULT_ENCRYPTION = REQUIRED
+SEC_DEFAULT_INTEGRITY = REQUIRED
+SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION = True
+ALLOW_WRITE = $(ALLOW_WRITE), submit-side@matchsession/*
+ALLOW_ADMINISTRATOR = condor_pool@*/*
+
+
+# Job environment config
+#NUM_SLOTS = 1
+NUM_SLOTS = <%= @slots %>
+#USER_JOB_WRAPPER = /usr/libexec/jobwrapper.sh
+USER_JOB_WRAPPER = <%= @job_wrapper %>
+<% @slots.each do |slot| -%>
+SLOT1_USER = slot<%= slot %>
+<% end -%>
+
+#DEDICATED_EXECUTE_ACCOUNT_REGEXP = slot[1-8]+
+DEDICATED_EXECUTE_ACCOUNT_REGEXP = slot[1-<%= @slots %>]+
+EXECUTE = <%= @homedir %>/execute
+
+#NodeType = "atlas"
+NodeType = <%= @node_type %>
+STARTD_ATTRS = $(STARTD_ATTRS) NodeType
+
+# Debug settings
+#ALL_DEBUG = D_FULLDEBUG, D_COMMAND, D_SECURITY, D_NETWORK
+#STARTD_DEBUG = D_PID D_COMMAND D_JOB D_MACHINE
