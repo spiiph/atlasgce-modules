@@ -1,4 +1,4 @@
-# class: xrootd::head
+# class: xrootd::client
 #
 #  XrootD is a high performance network storage system widely used in high
 #  energy physics experiments such as ATLAS and ALICE. The underlying Xroot
@@ -7,20 +7,25 @@
 #  system consisting of one redirector node and one or more data server
 #  nodes.
 #
-#  This is the configuration for an ATLAS Tier 3 head node. It has a
-#  redirector and a data server.
+#  This is the configuration for an ATLAS Tier 3 head/worker node. It is made
+#  up of a redirector, data servers, and file residency managers for staging.
 #
 # Parameters:
-#   - $redirector: fully qualified domain name for the redirector
+#   - $redirector: Fully qualified domain name for the redirector
+#   - $storage_path: Path for internal referencesath for internal references
 #   - $oss_localroot: Local root for the data server inventories
-#   - $storage_path: Path for internal references
+#   - $global_redirector: FAX redirector used for staging
+#   - $xrdport: Port for the XRootD daemon
+#   - $trace: Turn on tracing for the XRootD daemons
 #   - $config: XrootD config file path
 #   - $sysconfig: XrootD system configuration file path
+#   - $auth_file: XrootD authentication file
+#   - $stagein: Script for staging from the global redirector
 #
 # Actions:
 #   - sets up the storage directories, prepares configuration files for
-#     xrootd and the the simple storage inventory
-#   - starts the xrootd and cmsd services
+#     XRootD, CMS, and FRM
+#   - starts the xrootd, cmsd, xfr_frmd, and xfr_purged services
 #
 # Requires:
 #   - This has been tested on CentOS6
