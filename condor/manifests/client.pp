@@ -1,6 +1,12 @@
 # class: condor::client
 #
-#  Condor is a ...
+#  Condor is a specialized workload management system for compute-intensive
+#  jobs. Like other full-featured batch systems, Condor provides a job
+#  queueing mechanism, scheduling policy, priority scheme, resource
+#  monitoring, and resource management.  Users submit their serial or
+#  parallel jobs to Condor, Condor places them into a queue, chooses when and
+#  where to run the jobs based upon a policy, carefully monitors their
+#  progress, and ultimately informs the user upon completion.
 #
 #  This is the configuration for an ATLAS Tier 3 head/worker node. It is made
 #  up of ...
@@ -8,9 +14,12 @@
 # Parameters:
 #   - $head: FQDN of Condor Central Manager
 #   - $role: Role of this node (node, collector, submit)
-#   - $config: Path to condor_config.local file
+#   - $slots: Number of worker slots for each node
+#   - $node_type: Determines what job types this node should accept
 #   - $password: Condor pool password
 #   - $password_file: Path to pool password file
+#   - $config: Path to condor_config.local file
+#   - $job_wrapper: Path to job wrapper script
 #
 # Actions:
 #   - prepares configuration files for Condor
@@ -28,9 +37,12 @@
 class condor::client(
   $head,
   $role,
-  $config = '/etc/condor/condor_config.local',
+  $slots = 1,
+  $node_type = 'base',
   $password = 'condor',
   $password_file = "$homedir/pool_password",
+  $config = '/etc/condor/condor_config.local',
+  $job_wrapper = '/usr/libexec/condor/jobwrapper.sh',
 ) inherits condor
 {
   file { $config:
@@ -42,23 +54,20 @@ class condor::client(
   }
 
   exec { pool_password:
-    command => "condor_store_cred -c add -p $password -f $password_file",
+    command => "/usr/sbin/condor_store_cred -c add -p $password -f $password_file",
     require => File[$config],
     creates => $password_file,
   }
 
-  if ($role == 'worker')
-  {
-    file { '/usr/libexec/condor/jobwrapper.sh':
-      owner => 'root',
-      group => 'root',
-      mode => 0755,
-      source => "puppet:///modules/condor/jobwrapper.sh",
-      notify => Service["condor"],
-    }
+  file { $job_wrapper:
+    owner => 'root',
+    group => 'root',
+    mode => 0755,
+    source => 'puppet:///modules/condor/jobwrapper.sh',
+    require => Class['condor'],
   }
 
-  service { "condor":
+  service { 'condor':
     ensure => running,
     enable => true,
     subscribe => File[$config],

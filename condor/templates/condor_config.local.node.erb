@@ -39,15 +39,12 @@ ALLOW_ADMINISTRATOR = condor_pool@*/*
 
 
 # Job environment config
-#NUM_SLOTS = 1
 NUM_SLOTS = <%= @slots %>
-#USER_JOB_WRAPPER = /usr/libexec/jobwrapper.sh
 USER_JOB_WRAPPER = <%= @job_wrapper %>
 <% @slots.each do |slot| -%>
-SLOT1_USER = slot<%= slot %>
+SLOT<%= slot %>_USER = slot<%= slot %>
 <% end -%>
 
-#DEDICATED_EXECUTE_ACCOUNT_REGEXP = slot[1-8]+
 DEDICATED_EXECUTE_ACCOUNT_REGEXP = slot[1-<%= @slots %>]+
 EXECUTE = <%= @homedir %>/execute
 

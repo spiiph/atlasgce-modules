@@ -1,8 +1,14 @@
 # Class: condor
 #
-#  This is a base installation of condor
+#  Condor is a specialized workload management system for compute-intensive
+#  jobs. Like other full-featured batch systems, Condor provides a job
+#  queueing mechanism, scheduling policy, priority scheme, resource
+#  monitoring, and resource management.  Users submit their serial or
+#  parallel jobs to Condor, Condor places them into a queue, chooses when and
+#  where to run the jobs based upon a policy, carefully monitors their
+#  progress, and ultimately informs the user upon completion.
 #
-#  Condor is a ...
+#  This is a base installation of condor.
 #
 # Parameters:
 #
@@ -23,7 +29,9 @@ class condor (
     $group = 'condor',
     $homedir = '/var/lib/condor',
 ){
-  package { ['condor']:
+  include yumrepos
+
+  package { 'condor':
     ensure => installed,
     require => Yumrepo[htcondor],
   }
@@ -43,5 +51,4 @@ class condor (
     system => true,
     require => Group[$group],
   }
-
 }
