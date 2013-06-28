@@ -1,13 +1,17 @@
-### Submit node setup
-CONDOR_HOST = <%= @head %>
-COLLECTOR_NAME = Condor Submission Manager at $(FULL_HOSTNAME)
+### Head (combined collector and submit) node setup
+CONDOR_HOST = $(FULL_HOSTNAME)
+COLLECTOR_NAME = Condor Central Manager at $(FULL_HOSTNAME)
 
 START = TRUE
 SUSPEND = FALSE
 PREEMPT = FALSE
 KILL = FALSE
+RANK = 0
+CLAIM_WORKLIFE = 3600
+PREEMPTION_REQUIREMENTS = False
+NEGOTIATOR_CONSIDER_PREEMPTION = False
 
-DAEMON_LIST = MASTER, SCHEDD, SHARED_PORT
+DAEMON_LIST = COLLECTOR, MASTER, NEGOTIATOR, SCHEDD, SHARED_PORT
 UID_DOMAIN = <%= @domain %>
 
 ### Networking
@@ -41,6 +45,14 @@ JobLeaseDuration = 1800
 NEGOTIATOR_INTERVAL = 900
 TOOL_TIMEOUT_MULTILIER=2
 
+COLLECTOR.STATISTICS_TO_PUBLISH=DC:2d
+
 # TODO: Which NEGOTIATOR_INTERVAL is correct? Are both useful?
 NEGOTIATOR_INTERVAL = 300
 NEGOTIATOR_INFORM_STARTD = False
+
+# Added by Jaime to prefer machines that haven't been idle for a long time
+NEGOTIATOR_PRE_JOB_RANK = (RemoteOwner =?= UNDEFINED) && (time() - EnteredCurrentState < 50000)
+
+### Class ads
+CONDOR_VIEW_CLASSAD_TYPES = Machine,Submitter,DaemonMaster,Collector

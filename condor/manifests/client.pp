@@ -38,11 +38,13 @@ class condor::client(
   $head,
   $role,
   $slots = 1,
-  $node_type = 'base',
+  $collectors = undef,
+  $node_type = undef,
   $password = 'condor',
   $password_file = "$homedir/pool_password",
   $config = '/etc/condor/condor_config.local',
   $job_wrapper = '/usr/libexec/condor/jobwrapper.sh',
+  $debug = false
 ) inherits condor
 {
   file { $config:

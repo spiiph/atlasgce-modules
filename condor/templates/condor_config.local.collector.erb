@@ -1,4 +1,4 @@
-# Collector setup
+### Multi collector setup
 CONDOR_HOST = $(FULL_HOSTNAME)
 COLLECTOR_NAME = Condor Central Manager at $(FULL_HOSTNAME)
 
@@ -6,73 +6,68 @@ START = TRUE
 SUSPEND = FALSE
 PREEMPT = FALSE
 KILL = FALSE
-PREEMPTION_REQUIREMENTS = False
 RANK = 0
-NEGOTIATOR_CONSIDER_PREEMPTION = False
 CLAIM_WORKLIFE = 3600
+PREEMPTION_REQUIREMENTS = False
+NEGOTIATOR_CONSIDER_PREEMPTION = False
 
 DAEMON_LIST = COLLECTOR, MASTER, NEGOTIATOR, SCHEDD, SHARED_PORT
 UID_DOMAIN = <%= @domain %>
 
-# Networking
+### Networking
+COLLECTOR_HOST=$(CONDOR_HOST):29650
 HIGHPORT = 30000
 LOWPORT = 20000
 CREDD_PORT = 29620
 STORK_PORT = 29621
-COLLECTOR_HOST=$(CONDOR_HOST):29650
 USE_SHARED_PORT = TRUE
 COLLECTOR.USE_SHARED_PORT = FALSE
+UPDATE_COLLECTOR_WITH_TCP = TRUE
+COLLECTOR_ADDRESS_FILE =
 
-# Security
+### Security
 ALLOW_WRITE = condor_pool@*/*
 SEC_DEFAULT_AUTHENTICATION = REQUIRED
 SEC_DEFAULT_AUTHENTICATION_METHODS = PASSWORD, FS
 SEC_PASSWORD_FILE = <%= @password_file %>
-QUEUE_SUPER_USERS = condor, condor_pool
 SEC_DEFAULT_ENCRYPTION = REQUIRED
 SEC_DEFAULT_INTEGRITY = REQUIRED
 SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION  = True
+QUEUE_SUPER_USERS = condor, condor_pool
 
-# NOTE: Move below scaling aids?
-# Multi-collector setup to ease load
+### Multi-collector setup to ease load
+# TODO: COLLECTOR_NAME is already set. Is another one really required?
 COLLECTOR_NAME=$(FULL_HOSTNAME)
-<% (1..21).each do |i| -%>
+<% (1..@collectors).each do |i| -%>
 COLLECTOR<%= i %> = $(COLLECTOR)
-COLLECTOR<%= i %>_ARGS = -f -p <%= 29660 + i %>
-COLLECTOR<%= i %>_ENVIRONMENT = "_CONDOR_COLLECTOR_LOG=$(LOG)/Collector1Log _condor_CONDOR_VIEW_HOST=$(COLLECTOR_HOST) _condor_COLLECTOR_HOST=$(CONDOR_HOST):29660 _condor_COLLECTOR_NAME=Collector<%= i %>"
+COLLECTOR<%= i %>_ARGS = -f -p <%= 29660 + i - 1 %>
+COLLECTOR<%= i %>_ENVIRONMENT = "_CONDOR_COLLECTOR_LOG=$(LOG)/Collector<%= i %>Log _condor_CONDOR_VIEW_HOST=$(COLLECTOR_HOST) _condor_COLLECTOR_HOST=$(CONDOR_HOST):29660 _condor_COLLECTOR_NAME=Collector<%= i %>"
+<% end -%>
+DAEMON_LIST = $(DAEMON_LIST) <%= (1..@collectors).collect { |i| "COLLECTOR#{i}" }.join(" ") %>
+
+<% if @debug -%>
+### Debug settings
+ALL_DEBUG = D_FULLDEBUG, D_COMMAND, D_SECURITY, D_NETWORK
 <% end -%>
 
-DAEMON_LIST = $(DAEMON_LIST) <%= (1..21).collect { |i| "COLLECTOR#{i}" }.join(" ") %>
-
-# NOTE: Move above security?
-COLLECTOR_ADDRESS_FILE =
-UPDATE_COLLECTOR_WITH_TCP = TRUE
-
-# Scaling aids
+### Scaling
 SUBMIT_EXPRS = $(SUBMIT_EXPRS) JobLeaseDuration
 JobLeaseDuration = 1800
 NEGOTIATOR_INTERVAL = 900
 TOOL_TIMEOUT_MULTILIER=2
 
-#ALL_DEBUG = D_FULLDEBUG, D_COMMAND, D_SECURITY, D_NETWORK
-
-# Added by Jaime Frey for debugging
-MAX_SCHEDD_LOG = 100000000
-MAX_SHADOW_LOG = 100000000
-MAX_COLLECTOR_LOG = 100000000
-MAX_NEGOTIATOR_LOG = 100000000
-
 COLLECTOR.STATISTICS_TO_PUBLISH=DC:2d
 
+# TODO: Which NEGOTIATOR_INTERVAL is correct? Are both useful?
 NEGOTIATOR_INTERVAL = 300
 NEGOTIATOR_INFORM_STARTD = False
 
 # Added by Jaime to prefer machines that haven't been idle for a long time
 NEGOTIATOR_PRE_JOB_RANK = (RemoteOwner =?= UNDEFINED) && (time() - EnteredCurrentState < 50000)
 
-# Added by Jaime to forward more ad types to central collector
-# Before Condor 7.9.4, the collector will only accept one Collector ad
-# per host. Thus, we don't want to forward collector ads in older versions
-# of Condor.
+### Class ads
+# Added by Jaime to forward more ad types to central collector Before Condor
+# 7.9.4, the collector will only accept one Collector ad per host. Thus, we
+# don't want to forward collector ads in older versions of Condor.
 #CONDOR_VIEW_CLASSAD_TYPES = Machine,Submitter,DaemonMaster,Collector
 CONDOR_VIEW_CLASSAD_TYPES = Machine,Submitter,DaemonMaster
