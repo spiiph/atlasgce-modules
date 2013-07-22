@@ -56,7 +56,7 @@ class xrootd (
     require => Group[$group],
   }
 
-  file { 'logdir':
+  file { 'xrootd::logdir':
     ensure => directory,
     path => $logdir,
     group => $group,
