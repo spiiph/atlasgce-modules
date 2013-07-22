@@ -37,7 +37,7 @@ class cvmfs::client(
     group => 'root',
     mode => 0644,
     content => template('cvmfs/default.local.erb'),
-    notify => Service[cvmfs],
+    notify => Service[autofs],
   }
 
   # Clobber the /etc/fuse.conf, hopefully no
@@ -48,13 +48,6 @@ class cvmfs::client(
     owner   => 'root',
     group   => 'root',
     mode    => 0644,
-    notify  => Service[cvmfs],
-  }
-
-  service { 'cvmfs':
-    enable => true,
-    ensure => running,
-    require => [Class[autofs::client, cvmfs]],
-    subscribe =>  File[$local_conf, $fuse_conf, $autofs::client::master_conf],
+    notify  => Service[autofs],
   }
 }

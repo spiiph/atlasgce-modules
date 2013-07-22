@@ -49,7 +49,7 @@ class cvmfs (
     comment => 'CernVM-FS service account',
     managehome => true,
     system => true,
-    require => Group['cvmfs'],
+    require => Group[$group],
   }
 
   file { 'cachedir':
@@ -57,14 +57,16 @@ class cvmfs (
     path => $cachedir,
     owner => $user,
     group => $group,
-    require => [Group['cvmfs'], User['cvmfs']],
+    mode => 0755,
+    require => [Group[$group], User[$user]],
   }
 
-  file { 'logdir':
+  file { 'cvmfs::logdir':
     ensure => 'directory',
     path => $logdir,
     owner => $user,
     group => $group,
-    require => [Group['cvmfs'], User['cvmfs']],
+    mode => 0755,
+    require => [Group[$group], User[$user]],
   }
 }
