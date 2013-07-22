@@ -27,7 +27,6 @@ class autofs::client(
     group => 'root',
     mode => 0644,
     content => template('autofs/auto.master.erb'),
-    notify => Service[autofs],
   }
 
   service { 'autofs':
@@ -38,7 +37,7 @@ class autofs::client(
   }
 }
 
-# NOTE: Not sure what to use this one for
+# Class for creating extra mounts
 class autofs::mount(
   $name,
   $domain,
