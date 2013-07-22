@@ -61,6 +61,14 @@ class condor::client(
     creates => $password_file,
   }
 
+  file { $password_file:
+    ensure => present,
+    owner => 'root',
+    group => 'root',
+    mode => 0600,
+    require => Exec[pool_password],
+  }
+
   file { $job_wrapper:
     owner => 'root',
     group => 'root',

@@ -1,6 +1,6 @@
 ### Worker node setup
 CONDOR_HOST = <%= @head %>
-COLLECTOR_NAME = Condor Node at $(FULL_HOSTNAME)
+SCHEDD_NAME = condor@<%= @head %>
 
 START = TRUE
 SUSPEND = FALSE
@@ -18,7 +18,7 @@ UID_DOMAIN = <%= @domain %>
 <% if @collectors -%>
 COLLECTOR_HOST=$(CONDOR_HOST):<%= 29660 + 1 + rand(@collectors) %>
 <% else -%>
-COLLECTOR_HOST=$(CONDOR_HOST):29660
+COLLECTOR_HOST=$(CONDOR_HOST):29650
 <% end %>
 HIGHPORT = 30000
 LOWPORT = 20000
@@ -34,8 +34,6 @@ PRIVATE_NETWORK_NAME = <%= @domain %>
 
 ### Security
 ALLOW_WRITE = condor_pool@*
-# Collector has this. Are they equivalent?
-#ALLOW_WRITE = condor_pool@*/*
 SEC_DEFAULT_AUTHENTICATION = REQUIRED
 SEC_DEFAULT_AUTHENTICATION_METHODS = PASSWORD, FS
 SEC_PASSWORD_FILE = <%= @password_file %>
@@ -61,6 +59,7 @@ NodeType = <%= @node_type %>
 STARTD_ATTRS = $(STARTD_ATTRS) NodeType
 <% end -%>
 
+ALL_DEBUG = D_SECURITY
 <% if @debug -%>
 ### Debug settings
 ALL_DEBUG = D_FULLDEBUG, D_COMMAND, D_SECURITY, D_NETWORK

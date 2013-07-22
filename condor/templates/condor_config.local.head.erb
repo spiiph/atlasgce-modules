@@ -1,6 +1,8 @@
 ### Head (combined collector and submit) node setup
-CONDOR_HOST = $(FULL_HOSTNAME)
-COLLECTOR_NAME = Condor Central Manager at $(FULL_HOSTNAME)
+# NOTE: For some reason, $FULL_HOSTNAME doesn't return the fqdn for the host
+CONDOR_HOST = <%= @head %>
+SCHEDD_NAME = condor@<%= @head %>
+COLLECTOR_NAME = Condor Central Manager
 
 START = TRUE
 SUSPEND = FALSE
@@ -34,6 +36,7 @@ SEC_DEFAULT_INTEGRITY = REQUIRED
 SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION  = True
 QUEUE_SUPER_USERS = condor, condor_pool
 
+ALL_DEBUG = D_SECURITY
 <% if @debug -%>
 ### Debug settings
 ALL_DEBUG = D_FULLDEBUG, D_COMMAND, D_SECURITY, D_NETWORK

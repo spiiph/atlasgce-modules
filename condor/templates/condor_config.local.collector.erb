@@ -1,6 +1,6 @@
 ### Multi collector setup
 CONDOR_HOST = $(FULL_HOSTNAME)
-COLLECTOR_NAME = Condor Central Manager at $(FULL_HOSTNAME)
+COLLECTOR_NAME = Condor Central Manager
 
 START = TRUE
 SUSPEND = FALSE
@@ -36,8 +36,6 @@ SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION  = True
 QUEUE_SUPER_USERS = condor, condor_pool
 
 ### Multi-collector setup to ease load
-# TODO: COLLECTOR_NAME is already set. Is another one really required?
-COLLECTOR_NAME=$(FULL_HOSTNAME)
 <% (1..@collectors).each do |i| -%>
 COLLECTOR<%= i %> = $(COLLECTOR)
 COLLECTOR<%= i %>_ARGS = -f -p <%= 29660 + i - 1 %>
