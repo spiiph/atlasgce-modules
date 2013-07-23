@@ -35,6 +35,7 @@
 
 class xrootd::client (
   $redirector,
+  $role,
   $storage_path = '/atlas',
   $oss_localroot = '/data/scratch',
   $global_redirector = 'atlas-xrd-eu.cern.ch',
@@ -70,29 +71,38 @@ class xrootd::client (
     require => Class['xrootd'],
   }
 
-  file { $stagein:
-    owner => $user,
-    group => $group,
-    mode => 0755,
-    ensure => present,
-    content => template('xrootd/stagein.sh.erb'),
-    require => Class['xrootd'],
+  if $role == 'node' {
+    file { $stagein:
+      owner => $user,
+      group => $group,
+      mode => 0755,
+      ensure => present,
+      content => template('xrootd/stagein.sh.erb'),
+      require => Class['xrootd'],
+    }
+
+    file { [$oss_localroot, "$oss_localroot$storage_path"]:
+      owner => $user,
+      group => $group,
+      ensure => directory,
+      recurse => true,
+      require => Class['xrootd'],
+    }
+
+    $requires = [File["$oss_localroot$storage_path"]]
+    $frm_subscribes = File[$sysconfig, $config, $stagein]
+  } else {
+    $requires = []
+    $frm_subscribes = File[$sysconfig, $config]
   }
 
-  file { [$oss_localroot, "$oss_localroot$storage_path"]:
-    owner => $user,
-    group => $group,
-    ensure => directory,
-    recurse => true,
-    require => Class['xrootd'],
-  }
 
   # Start the xrootd service
   service { 'xrootd':
     ensure => running,
     enable => true,
     subscribe => File[$sysconfig, $config, $auth_file],
-    require => File["$oss_localroot$storage_path"],
+    require => $requires,
    }
 
   # Start the cmsd service
@@ -100,20 +110,20 @@ class xrootd::client (
     ensure => running,
     enable => true,
     subscribe => File[$sysconfig, $config, $auth_file],
-    require => File["$oss_localroot$storage_path"],
+    require => $requires,
    }
 
   service { 'frm_xfrd':
     ensure => running,
     enable => true,
-    subscribe => File[$sysconfig, $config, $stagein],
-    require => File["$oss_localroot$storage_path"],
+    subscribe => $frm_subscribes,
+    require => $requires,
    }
 
   service { 'frm_purged':
     ensure => running,
     enable => true,
-    subscribe => File[$sysconfig, $config, $stagein],
-    require => File["$oss_localroot$storage_path"],
+    subscribe => $frm_subscribes,
+    require => $requires,
    }
 }

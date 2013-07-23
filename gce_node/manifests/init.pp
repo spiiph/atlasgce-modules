@@ -1,6 +1,6 @@
 class gce_node (
   $head,
-  $condor_role,
+  $role,
   $condor_slots_per_node,
   $xrootd_global_redirector
 ){
@@ -15,12 +15,13 @@ class gce_node (
 
   class { 'xrootd::client':
     redirector => $head,
+    role => $role,
     global_redirector => $xrootd_global_redirector,
   }
 
   class { 'condor::client':
       head => $head,
-      role => $condor_role,
+      role => $role,
       slots => $condor_slots_per_node,
   }
 }
