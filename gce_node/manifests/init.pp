@@ -1,6 +1,7 @@
 class gce_node (
   $head,
   $role,
+  $condor_pool_password,
   $condor_slots_per_node,
   $xrootd_global_redirector
 ){
@@ -22,6 +23,7 @@ class gce_node (
   class { 'condor::client':
       head => $head,
       role => $role,
+      password => $condor_pool_password,
       slots => $condor_slots_per_node,
   }
 }

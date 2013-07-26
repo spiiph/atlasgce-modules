@@ -14,9 +14,9 @@
 # Parameters:
 #   - $head: FQDN of Condor Central Manager
 #   - $role: Role of this node (node, collector, submit)
+#   - $password: Condor pool password
 #   - $slots: Number of worker slots for each node
 #   - $node_type: Determines what job types this node should accept
-#   - $password: Condor pool password
 #   - $password_file: Path to pool password file
 #   - $config: Path to condor_config.local file
 #   - $job_wrapper: Path to job wrapper script
@@ -37,10 +37,10 @@
 class condor::client(
   $head,
   $role,
+  $password,
   $slots = 1,
   $collectors = undef,
   $node_type = undef,
-  $password = 'condor',
   $password_file = "$homedir/pool_password",
   $config = '/etc/condor/condor_config.local',
   $job_wrapper = '/usr/libexec/condor/jobwrapper.sh',
