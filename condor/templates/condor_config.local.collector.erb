@@ -36,12 +36,12 @@ SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION  = True
 QUEUE_SUPER_USERS = condor, condor_pool
 
 ### Multi-collector setup to ease load
-<% (1..@collectors).each do |i| -%>
+<% (1..@collectors.to_i).each do |i| -%>
 COLLECTOR<%= i %> = $(COLLECTOR)
 COLLECTOR<%= i %>_ARGS = -f -p <%= 29660 + i - 1 %>
 COLLECTOR<%= i %>_ENVIRONMENT = "_CONDOR_COLLECTOR_LOG=$(LOG)/Collector<%= i %>Log _condor_CONDOR_VIEW_HOST=$(COLLECTOR_HOST) _condor_COLLECTOR_HOST=$(CONDOR_HOST):29660 _condor_COLLECTOR_NAME=Collector<%= i %>"
 <% end -%>
-DAEMON_LIST = $(DAEMON_LIST) <%= (1..@collectors).collect { |i| "COLLECTOR#{i}" }.join(" ") %>
+DAEMON_LIST = $(DAEMON_LIST) <%= (1..@collectors.to_i).collect { |i| "COLLECTOR#{i}" }.join(" ") %>
 
 <% if @debug -%>
 ### Debug settings
