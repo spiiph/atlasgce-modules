@@ -44,13 +44,12 @@ ALLOW_WRITE = $(ALLOW_WRITE), submit-side@matchsession/*
 ALLOW_ADMINISTRATOR = condor_pool@*/*
 
 ### Job environment config
-NUM_SLOTS = <%= @slots %>
 USER_JOB_WRAPPER = <%= @job_wrapper %>
+NUM_SLOTS = <%= @slots %>
 <% @slots.each do |slot| -%>
 SLOT<%= slot %>_USER = slot<%= slot %>
 <% end -%>
-
-DEDICATED_EXECUTE_ACCOUNT_REGEXP = slot[1-<%= @slots %>]+
+DEDICATED_EXECUTE_ACCOUNT_REGEXP = slot[0-9]+
 EXECUTE = <%= @homedir %>/execute
 
 ### Node type (when using mixed node type clusters)

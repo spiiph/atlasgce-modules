@@ -47,6 +47,13 @@ class condor::client(
   $debug = false
 ) inherits condor
 {
+
+  if $role == 'node' {
+    # Create an user account for each condor slot
+    $user_array = condor_user_array($slots)
+    condor_user { $user_array: }
+  }
+
   file { $config:
     owner => 'root',
     group => 'root',
@@ -85,3 +92,20 @@ class condor::client(
   }
 }
 
+define condor_user ($user = $name, $group = $name) {
+  group { $user:
+    ensure => present,
+  }
+
+  user { $group:
+    ensure => present,
+    gid => $group,
+    shell => '/bin/bash',
+    require => Group[$group],
+  }
+
+  #notify { $user:
+    #message => "Created user and group for $user",
+    #require => User[$user],
+  #}
+}
