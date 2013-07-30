@@ -1,0 +1,33 @@
+# Keep grid setup out of environment for root and sysadmin.
+if [[ ! "$USER" =~ ^slot[0-9]+$ ]] ; then
+  return 0
+fi
+
+export GLOBUS_FTP_CLIENT_GRIDFTP2=true
+
+# Workaround for condor not setting $HOME for worker sessions.
+# voms-proxy-info requires this.
+if [[ -z "$HOME" ]] ; then
+  export HOME=`eval echo ~$USER`
+fi
+
+## Set up grid environment:
+export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase
+source $ATLAS_LOCAL_ROOT_BASE/user/atlasLocalSetup.sh --quiet
+
+# Use EMI grid software
+<% if @use_emi_grid_software -%>
+source localSetupEmi --quiet
+export ALRB_useGridSW=emi
+<% else -%>
+source localSetupGLite --quiet
+export ALRB_useGridSW=gLite
+<% end -%>
+
+## Fix for using AtlasLocalRootBase with a kit
+unset  AtlasSetupSite
+rm ~/.asetup
+
+# Site-specific variables (e.g. Frontier and Squid servers) are set based on ATLAS_SITE_NAME (from JDL).
+# This auto-setup is only temporarily needed, and will soon become automatic
+. /cvmfs/atlas.cern.ch/repo/sw/local/bin/auto-setup

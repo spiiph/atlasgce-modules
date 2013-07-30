@@ -33,6 +33,8 @@ class gce_node (
     install_slc6_packages => false,
   }
 
+  class { 'gce_node::grid_setup': }
+
   class { 'cvmfs::client':
     repositories => 'atlas.cern.ch,atlas-condb.cern.ch',
   }
