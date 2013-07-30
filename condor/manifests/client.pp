@@ -38,7 +38,7 @@ class condor::client(
   $head,
   $role,
   $password,
-  $slots = 1,
+  $slots = 32,
   $collectors = undef,
   $node_type = undef,
   $password_file = "$homedir/pool_password",
