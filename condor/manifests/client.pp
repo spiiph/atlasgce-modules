@@ -101,6 +101,7 @@ define condor_user ($user = $name, $group = $name) {
     ensure => present,
     gid => $group,
     shell => '/bin/bash',
+    managehome => true,
     require => Group[$group],
   }
 

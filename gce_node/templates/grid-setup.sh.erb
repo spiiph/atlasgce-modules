@@ -17,10 +17,10 @@ source $ATLAS_LOCAL_ROOT_BASE/user/atlasLocalSetup.sh --quiet
 
 # Use EMI grid software
 <% if @use_emi_grid_software -%>
-source localSetupEmi --quiet
+localSetupEmi --quiet
 export ALRB_useGridSW=emi
 <% else -%>
-source localSetupGLite --quiet
+localSetupGLite --quiet
 export ALRB_useGridSW=gLite
 <% end -%>
 
