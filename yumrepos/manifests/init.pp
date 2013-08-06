@@ -81,6 +81,30 @@ class yumrepos {
       gpgcheck => 0,
       priority => 99,
       protect  => 1;
+    "racf-grid-production":
+      descr => "RACF Grid Production RPMS ${operatingsystemmajrelease}Workstation - ${architecture}",
+      baseurl => "http://dev.racf.bnl.gov/yum/grid/production/rhel/${operatingsystemmajrelease}Workstation/${architecture}",
+      enabled => 1,
+      gpgcheck => 1,
+      gpgkey   => 'http://dev.racf.bnl.gov/yum/racf-grid-release/RPM-GPG-KEY-racf-grid.asc',
+      priority => 1,
+      protect  => 1;
+    "racf-grid-testing":
+      descr => "RACF Grid Testing ${operatingsystemmajrelease}Workstation - ${architecture}",
+      baseurl => "http://dev.racf.bnl.gov/yum/grid/testing/rhel/${operatingsystemmajrelease}Workstation/${architecture}",
+      enabled => 1,
+      gpgcheck => 1,
+      gpgkey   => 'http://dev.racf.bnl.gov/yum/racf-grid-release/RPM-GPG-KEY-racf-grid.asc',
+      priority => 98,
+      protect  => 1;
+    "racf-grid-development":
+      descr => "RACF Grid Development for ${operatingsystemmajrelease}Workstation - ${architecture}",
+      baseurl => "http://dev.racf.bnl.gov/yum/grid/development/rhel/${operatingsystemmajrelease}Workstation/${architecture}",
+      enabled => 1,
+      gpgcheck => 1,
+      gpgkey   => 'http://dev.racf.bnl.gov/yum/racf-grid-release/RPM-GPG-KEY-racf-grid.asc',
+      priority => 99,
+      protect  => 1;
   }
 }
 
