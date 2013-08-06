@@ -71,6 +71,7 @@ class xrootd::client (
     require => Class['xrootd'],
   }
 
+  # Configuration for a worker/cache node
   if $role == 'node' {
     file { $stagein:
       owner => $user,
@@ -90,12 +91,23 @@ class xrootd::client (
     }
 
     $requires = [File["$oss_localroot$storage_path"]]
-    $frm_subscribes = File[$sysconfig, $config, $stagein]
+
+    service { 'frm_xfrd':
+      ensure => running,
+      enable => true,
+      subscribe => File[$sysconfig, $config, $stagein],
+      require => $requires,
+     }
+
+    service { 'frm_purged':
+      ensure => running,
+      enable => true,
+      subscribe => $frm_subscribes,
+      require => $requires,
+     }
   } else {
     $requires = []
-    $frm_subscribes = File[$sysconfig, $config]
   }
-
 
   # Start the xrootd service
   service { 'xrootd':
@@ -110,20 +122,6 @@ class xrootd::client (
     ensure => running,
     enable => true,
     subscribe => File[$sysconfig, $config, $auth_file],
-    require => $requires,
-   }
-
-  service { 'frm_xfrd':
-    ensure => running,
-    enable => true,
-    subscribe => $frm_subscribes,
-    require => $requires,
-   }
-
-  service { 'frm_purged':
-    ensure => running,
-    enable => true,
-    subscribe => $frm_subscribes,
     require => $requires,
    }
 }
