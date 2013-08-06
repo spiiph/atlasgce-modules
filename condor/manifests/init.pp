@@ -11,10 +11,12 @@
 #  This is a base installation of condor.
 #
 # Parameters:
-#
+#   - $user: Condor user
+#   - $group: Condor group
+#   - $homedir: Condor homedir
 #
 # Actions:
-#   - installs condor
+#   - installs Condor and sets up the Condor user account
 #
 # Requires:
 #   - This has been tested on CentOS6
