@@ -46,13 +46,11 @@ ALL_DEBUG = D_FULLDEBUG, D_COMMAND, D_SECURITY, D_NETWORK
 SUBMIT_EXPRS = $(SUBMIT_EXPRS) JobLeaseDuration
 JobLeaseDuration = 1800
 NEGOTIATOR_INTERVAL = 900
+NEGOTIATOR_INFORM_STARTD = False
 TOOL_TIMEOUT_MULTILIER=2
 
 COLLECTOR.STATISTICS_TO_PUBLISH=DC:2d
 
-# TODO: Which NEGOTIATOR_INTERVAL is correct? Are both useful?
-NEGOTIATOR_INTERVAL = 300
-NEGOTIATOR_INFORM_STARTD = False
 
 # Added by Jaime to prefer machines that haven't been idle for a long time
 NEGOTIATOR_PRE_JOB_RANK = (RemoteOwner =?= UNDEFINED) && (time() - EnteredCurrentState < 50000)

@@ -66,6 +66,7 @@ class condor::client(
     command => "/usr/sbin/condor_store_cred -c add -p $password -f $password_file",
     require => File[$config],
     creates => $password_file,
+    notify => Service['condor'],
   }
 
   file { $password_file:

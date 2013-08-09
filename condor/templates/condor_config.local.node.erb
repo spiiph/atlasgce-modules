@@ -28,10 +28,6 @@ UPDATE_INTERVAL = 30
 CCB_ADDRESS = $(COLLECTOR_HOST)
 PRIVATE_NETWORK_NAME = <%= @domain %>
 
-# TODO: Is this necessary?
-#DAEMON_LIST =  $(DAEMON_LIST) SHARED_PORT
-
-
 ### Security
 ALLOW_WRITE = condor_pool@*
 SEC_DEFAULT_AUTHENTICATION = REQUIRED
@@ -50,6 +46,7 @@ NUM_SLOTS = <%= @slots %>
 SLOT<%= slot %>_USER = slot<%= "%02d" % slot %>
 <% end -%>
 DEDICATED_EXECUTE_ACCOUNT_REGEXP = slot[0-9]+
+STARTER_ALLOW_RUNAS_OWNER = False
 EXECUTE = <%= @homedir %>/execute
 
 ### Node type (when using mixed node type clusters)
