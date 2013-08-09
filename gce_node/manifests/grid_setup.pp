@@ -1,4 +1,5 @@
 class gce_node::grid_setup (
+  $atlas_site,
   $use_emi_grid_software = true,
   $setup_file = '/etc/profile.d/grid-setup.sh'
 )

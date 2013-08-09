@@ -25,7 +25,12 @@ class gce_node (
   $role,
   $condor_pool_password,
   $condor_slots,
-  $xrootd_global_redirector
+  $xrootd_global_redirector,
+  $atlas_site,
+  $panda_site = undef,
+  $panda_queue = undef,
+  $panda_cloud = undef,
+  $panda_administrator_email = undef,
 ){
 
   class { 'gce_node::packages':
@@ -33,7 +38,9 @@ class gce_node (
     install_slc6_packages => false,
   }
 
-  class { 'gce_node::grid_setup': }
+  class { 'gce_node::grid_setup':
+    atlas_site => $atlas_site,
+  }
 
   class { 'cvmfs::client':
     repositories => 'atlas.cern.ch,atlas-condb.cern.ch',
@@ -51,5 +58,15 @@ class gce_node (
       password => $condor_pool_password,
       slots => $condor_slots,
   }
-}
 
+  if $role == 'head' {
+    class { 'apf::client':
+      panda_site => $panda_site,
+      panda_queue => $panda_queue,
+      panda_cloud => $panda_cloud,
+      factory_id => 'atlasgce_factory',
+      admin_email => $panda_administrator_email,
+      http_server_address => gce_metadata_query('instance/network-interfaces/0/access-configs/0/external-ip'),
+    }
+  }
+}
