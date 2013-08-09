@@ -56,11 +56,19 @@ class xrootd (
     require => Group[$group],
   }
 
-  file { 'xrootd::logdir':
-    ensure => directory,
-    path => $logdir,
-    group => $group,
+  file { $homedir:
+    ensure => 'directory',
     owner => $user,
+    group => $group,
+    mode => 0755,
+    require => [Group[$group], User[$user]],
+  }
+
+  file { $logdir:
+    ensure => directory,
+    owner => $user,
+    group => $group,
+    mode => 0755,
     require => [Group[$group], User[$user]],
   }
 }

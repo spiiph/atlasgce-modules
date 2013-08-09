@@ -7,10 +7,10 @@
 # Parameters:
 #    $user: CVMFS user
 #    $group: CVMFS group
-#    $cachedir: CVMFS cache directory
 #    $homedir: CVMFS user home directory
-#    $rundir: CVMFS run directory
 #    $logdir: CVMFS log dir
+#    $cachedir: CVMFS cache directory
+#    $rundir: CVMFS run directory
 #
 # Actions:
 #   - installs cvmfs
@@ -23,9 +23,9 @@
 class cvmfs (
     $user = 'cvmfs',
     $group = 'cvmfs',
-    $cachedir = '/var/cache/cvmfs2',
     $homedir = '/var/lib/cvmfs',
     $logdir = '/var/log/cvmfs',
+    $cachedir = '/var/cache/cvmfs2',
     $rundir = '/var/run/cvmfs',
 )
 {
@@ -52,18 +52,24 @@ class cvmfs (
     require => Group[$group],
   }
 
-  file { 'cachedir':
+  file { $homedir:
     ensure => 'directory',
-    path => $cachedir,
     owner => $user,
     group => $group,
     mode => 0755,
     require => [Group[$group], User[$user]],
   }
 
-  file { 'cvmfs::logdir':
+  file { $logdir:
     ensure => 'directory',
-    path => $logdir,
+    owner => $user,
+    group => $group,
+    mode => 0755,
+    require => [Group[$group], User[$user]],
+  }
+
+  file { $cachedir:
+    ensure => 'directory',
     owner => $user,
     group => $group,
     mode => 0755,

@@ -30,6 +30,7 @@ class condor (
     $user = 'condor',
     $group = 'condor',
     $homedir = '/var/lib/condor',
+    $logdir = '/var/log/condor'
 ){
   include yumrepos
 
@@ -52,5 +53,21 @@ class condor (
     managehome => true,
     system => true,
     require => Group[$group],
+  }
+
+  file { $homedir:
+    ensure => 'directory',
+    owner => $user,
+    group => $group,
+    mode => 0755,
+    require => [Group[$group], User[$user]],
+  }
+
+  file { $logdir:
+    ensure => directory,
+    owner => $user,
+    group => $group,
+    mode => 0755,
+    require => [Group[$group], User[$user]],
   }
 }
