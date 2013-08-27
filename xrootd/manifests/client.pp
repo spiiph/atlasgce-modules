@@ -16,7 +16,7 @@
 #   - $oss_localroot: Local root for the data server inventories
 #   - $global_redirector: FAX redirector used for staging
 #   - $xrdport: Port for the XRootD daemon
-#   - $trace: Turn on tracing for the XRootD daemons
+#   - $debug: Turn on tracing for the XRootD daemons
 #   - $config: XrootD config file path
 #   - $sysconfig: XrootD system configuration file path
 #   - $auth_file: XrootD authentication file
@@ -40,7 +40,7 @@ class xrootd::client (
   $oss_localroot = '/data/scratch',
   $global_redirector = 'atlas-xrd-eu.cern.ch',
   $xrdport = 1094,
-  $trace = undef,
+  $debug = undef,
   $config = '/etc/xrootd/xrootd.cfg',
   $sysconfig = '/etc/sysconfig/xrootd',
   $auth_file = '/etc/xrootd/auth_file',
