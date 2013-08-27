@@ -23,14 +23,18 @@
 class gce_node (
   $head,
   $role,
-  $condor_pool_password,
+  $condor_pool_password = undef,
+  $condor_use_gsi = false,
   $condor_slots,
-  $xrootd_global_redirector,
+  $use_xrootd = true,
+  $xrootd_global_redirector = undef,
   $atlas_site,
+  $use_apf = true,
   $panda_site = undef,
   $panda_queue = undef,
   $panda_cloud = undef,
   $panda_administrator_email = undef,
+  $debug = false
 ){
 
   class { 'gce_node::packages':
@@ -44,22 +48,28 @@ class gce_node (
 
   class { 'cvmfs::client':
     repositories => 'atlas.cern.ch,atlas-condb.cern.ch',
+    debug => $debug,
   }
 
-  class { 'xrootd::client':
-    redirector => $head,
-    role => $role,
-    global_redirector => $xrootd_global_redirector,
+  if $use_xrootd == true {
+    class { 'xrootd::client':
+      redirector => $head,
+      role => $role,
+      global_redirector => $xrootd_global_redirector,
+      debug => $debug,
+    }
   }
 
   class { 'condor::client':
       head => $head,
       role => $role,
       password => $condor_pool_password,
+      use_gsi_security => $condor_use_gsi,
       slots => $condor_slots,
+      debug => $debug,
   }
 
-  if $role == 'head' {
+  if $role == 'head' and $use_apf == true {
     class { 'apf::client':
       panda_site => $panda_site,
       panda_queue => $panda_queue,
@@ -67,6 +77,7 @@ class gce_node (
       factory_id => 'atlasgce_factory',
       admin_email => $panda_administrator_email,
       http_server_address => gce_metadata_query('instance/network-interfaces/0/access-configs/0/external-ip'),
+      debug => $debug,
     }
   }
 }
