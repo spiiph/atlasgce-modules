@@ -20,7 +20,11 @@
 # CONFFILE=/etc/apf/factory.conf
 CONFFILE=<%= @factory_config %>
 
+<% if @debug -%>
 OPTIONS="--debug --sleep=60 --runas=<%= @user %> --log=<%= @logdir %>/apf.log"
+<% else -%>
+OPTIONS="--sleep=60 --runas=<%= @user %> --log=<%= @logdir %>/apf.log"
+<% end -%>
 
 #
 # Use this to provide voms-proxy-* on the path if it is not pre-setup by

@@ -47,6 +47,7 @@ class apf::client (
   $proxy_config = '/etc/apf/proxy.conf',
   $queues_config = '/etc/apf/queues.conf',
   $monitor_config = '/etc/apf/monitor.conf',
+  $debug = undef
 ) inherits apf
 {
   file { $scriptdir:
