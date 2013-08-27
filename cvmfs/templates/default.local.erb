@@ -11,4 +11,6 @@ CVMFS_HTTP_PROXY="<%= @squidproxy %>;DIRECT"
 CVMFS_HTTP_PROXY=DIRECT
 <% end -%>
 CVMFS_CACHE_BASE=<%= @cachedir %>
+<% if @debug -%>
 CVMFS_DEBUGLOG=<%= @logdir %>/cvmfs.log
+<% end -%>

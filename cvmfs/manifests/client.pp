@@ -24,6 +24,7 @@ class cvmfs::client(
     $repositories,
     $squidproxy = undef,
     $quota = undef,
+    $debug = undef,
     $local_conf = '/etc/cvmfs/default.local',
     $fuse_conf = '/etc/fuse.conf'
 ) inherits cvmfs
