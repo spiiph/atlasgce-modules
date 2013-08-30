@@ -3,10 +3,11 @@ atlasgce-modules
 
 Puppet modules for contextualizing ATLAS analysis clusters on GCE.
 
-yumrepos
+packagerepos
 --------
 
-Module to manage extra Yum repos for Scienfic Linux CERN, CERN EPEL, CernVM-FS, Condor, and APF.
+Module to manage extra package repositories for Scienfic Linux CERN, CERN
+EPEL, CernVM-FS, Condor, and APF.
 
 autofs and cvmfs
 ----------------
@@ -23,7 +24,7 @@ condor
 
 Module to manage the HT Condor configuration and services.
 
-gce_node
+gce\_node
 --------
 
 Umbrella module to set up a VM on GCE to be either a head node or a worker node.

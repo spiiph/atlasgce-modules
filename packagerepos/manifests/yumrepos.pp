@@ -1,7 +1,7 @@
 #
-# Required repositories.
+# Required repositories for the RedHat OS family
 #
-class yumrepos {
+class packagerepos::yumrepos {
   package { 'yum-plugin-priorities':
     ensure => installed,
   }

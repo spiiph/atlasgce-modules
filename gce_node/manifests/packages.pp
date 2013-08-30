@@ -28,7 +28,7 @@ class gce_node::packages (
     package { ['castor-lib.x86_64', 'castor-devel.x86_64',
                'mesa-libGL.x86_64', 'mesa-libGL-devel.x86_64',
                'mesa-libGLU.x86_64', 'mesa-libGLU-devel.x86_64']:
-      require => Class[Yumrepos],
+      require => Class[Packagerepos],
       ensure => installed,
     }
   }
@@ -56,7 +56,7 @@ class gce_node::packages (
       package { ['castor-lib.i686', 'castor-devel.i686', 'mesa-libGL.i686',
                  'mesa-libGL-devel.i686', 'mesa-libGLU.i686',
                  'mesa-libGLU-devel.i686']:
-        require => Class[Yumrepos],
+        require => Class[Packagerepos],
         ensure => installed,
       }
     }

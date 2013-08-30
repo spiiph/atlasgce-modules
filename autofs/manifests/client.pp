@@ -32,7 +32,7 @@ class autofs::client(
   service { 'autofs':
     enable => true,
     ensure => running,
-    require => Package[autofs],
+    require => Class[autofs],
     subscribe => File[$master_conf],
   }
 }

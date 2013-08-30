@@ -29,11 +29,13 @@ class cvmfs (
     $rundir = '/var/run/cvmfs',
 )
 {
-  include yumrepos
+  include packagerepos
 
-  package { ['cvmfs', 'cvmfs-init-scripts', 'cvmfs-keys', 'fuse', 'fuse-libs']:
-    ensure => installed,
-    require => Yumrepo[cvmfs],
+  if $osfamily != 'CernVM' {
+    package { ['cvmfs', 'cvmfs-init-scripts', 'cvmfs-keys', 'fuse', 'fuse-libs']:
+      ensure => installed,
+      require => Class[Packagerepos]
+    }
   }
 
   group { $group:
