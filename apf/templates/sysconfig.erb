@@ -23,7 +23,7 @@ CONFFILE=<%= @factory_config %>
 <% if @debug -%>
 OPTIONS="--debug --sleep=60 --runas=<%= @user %> --log=<%= @logdir %>/apf.log"
 <% else -%>
-OPTIONS="--sleep=60 --runas=<%= @user %> --log=<%= @logdir %>/apf.log"
+OPTIONS="--info --sleep=60 --runas=<%= @user %> --log=<%= @logdir %>/apf.log"
 <% end -%>
 
 #
