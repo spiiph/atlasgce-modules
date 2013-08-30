@@ -37,18 +37,20 @@
 class condor::client(
   $head,
   $role,
-  $password,
+  $password = undef,
   $slots = 32,
   $collectors = undef,
   $node_type = undef,
   $password_file = "$homedir/pool_password",
+  $use_gsi_security = false,
   $config = '/etc/condor/condor_config.local',
+  $sysconfig = undef,
   $job_wrapper = '/usr/libexec/condor/jobwrapper.sh',
-  $debug = false
+  $debug = undef
 ) inherits condor
 {
 
-  if $role == 'node' {
+  if $role == 'node' or $role == 'csnode' {
     # Create an user account for each condor slot
     $user_array = condor_user_array($slots)
     condor_user { $user_array: }
@@ -62,19 +64,21 @@ class condor::client(
     require => Class['condor'],
   }
 
-  exec { pool_password:
-    command => "/usr/sbin/condor_store_cred -c add -p $password -f $password_file",
-    require => File[$config],
-    creates => $password_file,
-    notify => Service['condor'],
-  }
+  if $password {
+    exec { pool_password:
+      command => "/usr/sbin/condor_store_cred -c add -p $password -f $password_file",
+      require => File[$config],
+      creates => $password_file,
+      notify => Service['condor'],
+    }
 
-  file { $password_file:
-    ensure => present,
-    owner => 'root',
-    group => 'root',
-    mode => 0600,
-    require => Exec[pool_password],
+    file { $password_file:
+      ensure => present,
+      owner => 'root',
+      group => 'root',
+      mode => 0600,
+      require => Exec[pool_password],
+    }
   }
 
   file { $job_wrapper:
@@ -85,11 +89,28 @@ class condor::client(
     require => Class['condor'],
   }
 
-  service { 'condor':
-    ensure => running,
-    enable => true,
-    subscribe => File[$config],
-    require => Exec[pool_password],
+  # Change the init.d script for the CloudScheduler nodes, but don't start
+  # the service
+  if $node == 'csnode' {
+    file { '/etc/init.d/condor':
+      owner => 'root',
+      group => 'root',
+      mode => 0755,
+      source => 'puppet://modules/condor/condor.init.d',
+      require => Class['condor'],
+    }
+  } else {
+    if $password {
+      $requires = [Exec[pool_password]]
+    } else {
+      $requires = []
+    }
+    service { 'condor':
+      ensure => running,
+      enable => true,
+      subscribe => File[$config, $job_wrapper],
+      require => $requires,
+    }
   }
 }
 

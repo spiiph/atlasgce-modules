@@ -29,15 +29,27 @@ CCB_ADDRESS = $(COLLECTOR_HOST)
 PRIVATE_NETWORK_NAME = <%= @domain %>
 
 ### Security
-ALLOW_WRITE = condor_pool@*
-SEC_DEFAULT_AUTHENTICATION = REQUIRED
-SEC_DEFAULT_AUTHENTICATION_METHODS = PASSWORD, FS
-SEC_PASSWORD_FILE = <%= @password_file %>
+HOSTALLOW_WRITE = $(FULL_HOSTNAME), $(CONDOR_HOST)
+ALLOW_WRITE = $(FULL_HOSTNAME), $(CONDOR_HOST)
+
 SEC_DEFAULT_ENCRYPTION = REQUIRED
 SEC_DEFAULT_INTEGRITY = REQUIRED
+SEC_DEFAULT_AUTHENTICATION = REQUIRED
+SEC_DEFAULT_AUTHENTICATION_METHODS = FS
+<% if @password_file -%>
+SEC_DEFAULT_AUTHENTICATION_METHODS = $(SEC_DEFAULT_AUTHENTICATION_METHODS), PASSWORD
+SEC_PASSWORD_FILE = <%= @password_file %>
 SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION = True
+ALLOW_WRITE = $(ALLOW_WRITE), condor_pool@*
+ALLOW_ADMINISTRATOR = $(ALLOW_ADMINISTRATOR), condor_pool@*/*
+<% end -%>
+<% if @use_gsi_security -%>
+GSI_DAEMON_DIRECTORY = /etc/grid-security
+GSI_DAEMON_CERT = /etc/grid-security/hostcert.pem
+GSI_DAEMON_KEY = /etc/grid-security/hostkey.pem
+<% end -%>
 ALLOW_WRITE = $(ALLOW_WRITE), submit-side@matchsession/*
-ALLOW_ADMINISTRATOR = condor_pool@*/*
+
 
 ### Job environment config
 USER_JOB_WRAPPER = <%= @job_wrapper %>
@@ -55,7 +67,6 @@ NodeType = <%= @node_type %>
 STARTD_ATTRS = $(STARTD_ATTRS) NodeType
 <% end -%>
 
-ALL_DEBUG = D_SECURITY
 <% if @debug -%>
 ### Debug settings
 ALL_DEBUG = D_FULLDEBUG, D_COMMAND, D_SECURITY, D_NETWORK
