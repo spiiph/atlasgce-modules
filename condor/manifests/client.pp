@@ -47,8 +47,7 @@ class condor::client(
   $sysconfig = undef,
   $job_wrapper = '/usr/libexec/condor/jobwrapper.sh',
   $debug = undef
-) inherits condor
-{
+) inherits condor {
 
   if $role == 'node' or $role == 'csnode' {
     # Create an user account for each condor slot

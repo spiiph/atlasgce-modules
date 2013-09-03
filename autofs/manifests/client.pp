@@ -19,9 +19,8 @@
 
 class autofs::client(
     $master_conf = '/etc/auto.master',
-    $mounts = undef,
-) inherits autofs
-{
+    $mounts = undef
+) inherits autofs {
   file { $master_conf:
     owner => 'root',
     group => 'root',
