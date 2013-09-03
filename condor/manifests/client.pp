@@ -91,12 +91,12 @@ class condor::client(
 
   # Change the init.d script for the CloudScheduler nodes, but don't start
   # the service
-  if $node == 'csnode' {
+  if $role == 'csnode' {
     file { '/etc/init.d/condor':
       owner => 'root',
       group => 'root',
       mode => 0755,
-      source => 'puppet://modules/condor/condor.init.d',
+      source => 'puppet:///modules/condor/condor.init.d',
       require => Class['condor'],
     }
   } else {
