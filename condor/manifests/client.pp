@@ -45,9 +45,19 @@ class condor::client(
   $use_gsi_security = false,
   $config = '/etc/condor/condor_config.local',
   $sysconfig = undef,
-  $job_wrapper = '/usr/libexec/condor/jobwrapper.sh',
+  $job_wrapper = undef,
   $debug = undef
-) inherits condor {
+) inherits condor
+{
+  if $job_wrapper != undef {
+      $_job_wrapper = $job_wrapper
+  } else {
+    if $osfamily == 'CernVM' {
+      $_job_wrapper = '/opt/condor/libexec/jobwrapper.sh'
+    } else {
+      $_job_wrapper = '/usr/libexec/condor/jobwrapper.sh'
+    }
+  }
 
   if $role == 'node' or $role == 'csnode' {
     # Create an user account for each condor slot
@@ -80,7 +90,7 @@ class condor::client(
     }
   }
 
-  file { $job_wrapper:
+  file { $_job_wrapper:
     owner => 'root',
     group => 'root',
     mode => 0755,
@@ -90,12 +100,12 @@ class condor::client(
 
   # Change the init.d script for the CloudScheduler nodes, but don't start
   # the service
-  if $node == 'csnode' {
+  if $role == 'csnode' {
     file { '/etc/init.d/condor':
       owner => 'root',
       group => 'root',
       mode => 0755,
-      source => 'puppet://modules/condor/condor.init.d',
+      source => 'puppet:///modules/condor/condor.init.d',
       require => Class['condor'],
     }
   } else {
@@ -107,7 +117,7 @@ class condor::client(
     service { 'condor':
       ensure => running,
       enable => true,
-      subscribe => File[$config, $job_wrapper],
+      subscribe => File[$config, $_job_wrapper],
       require => $requires,
     }
   }

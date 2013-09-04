@@ -23,6 +23,7 @@
 class gce_node (
   $head,
   $role,
+  $use_cvmfs = true,
   $condor_pool_password = undef,
   $condor_use_gsi = false,
   $condor_slots,
@@ -46,9 +47,11 @@ class gce_node (
     atlas_site => $atlas_site,
   }
 
-  class { 'cvmfs::client':
-    repositories => 'atlas.cern.ch,atlas-condb.cern.ch',
-    debug => $debug,
+  if $use_cvmfs == true {
+    class { 'cvmfs::client':
+      repositories => 'atlas.cern.ch,atlas-condb.cern.ch',
+      debug => $debug,
+    }
   }
 
   if $use_xrootd == true {

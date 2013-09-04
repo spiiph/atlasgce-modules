@@ -9,7 +9,6 @@ class gce_node::grid_setup (
     group => 'root',
     mode => 0644,
     content => template('gce_node/grid-setup.sh.erb'),
-    require => Class[cvmfs::client],
   }
 }
 

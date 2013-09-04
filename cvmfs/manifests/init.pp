@@ -27,7 +27,8 @@ class cvmfs (
     $logdir = '/var/log/cvmfs',
     $cachedir = '/var/cache/cvmfs2',
     $rundir = '/var/run/cvmfs'
-){
+)
+{
   include packagerepos
 
   if $osfamily != 'CernVM' {

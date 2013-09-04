@@ -20,7 +20,9 @@
 class autofs::client(
     $master_conf = '/etc/auto.master',
     $mounts = undef
-) inherits autofs {
+) inherits autofs
+{
+>>>>>>> upstream/cernvm
   file { $master_conf:
     owner => 'root',
     group => 'root',
