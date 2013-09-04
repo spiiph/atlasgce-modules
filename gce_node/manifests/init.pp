@@ -74,6 +74,15 @@ class gce_node (
       debug => $debug,
   }
 
+  if $osfamily == 'CernVM' {
+    class { 'cernvm':
+      cvmfs2       => 'on',
+      edition      => 'Basic',
+      organization => 'atlas',
+      repositories => 'atlas,atlas-condb,grid',
+    }
+  }
+
   if $role == 'head' and $use_apf == true {
     class { 'apf::client':
       panda_site => $panda_site,
