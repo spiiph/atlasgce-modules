@@ -65,7 +65,7 @@ START_REQUIREMENT=`cat /etc/condor/start_req_config 2>/dev/null`
 CONDOR_CONFIG=/etc/condor/condor_config
 
 # Path to condor_config_val
-CONDOR_CONFIG_VAL=/usr/bin/condor_config_val
+CONDOR_CONFIG_VAL=/opt/condor/bin/condor_config_val
 
 # Path to condor_config.local.modifications
 CONDOR_CONFIG_LOCAL_MODIFS=/etc/condor/condor_config.local.modifications
