@@ -46,6 +46,9 @@ class gce_node (
   class { 'gce_node::grid_setup':
   }
 
+  class {'gce_node::clock_setup':
+  }
+
   if $use_cvmfs == true {
     class { 'cvmfs::client':
       repositories => 'atlas.cern.ch,atlas-condb.cern.ch,grid.cern.ch',
