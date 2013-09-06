@@ -52,6 +52,7 @@ class gce_node (
       squidproxy => 'http://chrysaor.westgrid.ca:3128;http://cernvm-webfs.atlas-canada.ca:3128',
       quota => 4000,
       debug => $debug,
+      cvmfs_servers => 'http://cvmfs.racf.bnl.gov:8000/opt/@org@;http://cvmfs.fnal.gov:8000/opt/@org@;http://cvmfs-stratum-one.cern.ch:8000/opt/@org@;http://cernvmfs.gridpp.rl.ac.uk:8000/opt/@org@;http://cvmfs02.grid.sinica.edu.tw:8000/opt/@org@',
     }
   }
 
