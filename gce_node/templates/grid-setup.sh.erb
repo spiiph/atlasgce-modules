@@ -3,7 +3,7 @@ if [[ ! "$USER" =~ ^slot[0-9]+$ ]] ; then
   return 0
 fi
 
-#export GLOBUS_FTP_CLIENT_GRIDFTP2=true
+export GLOBUS_FTP_CLIENT_GRIDFTP2=true
 
 # Workaround for condor not setting $HOME for worker sessions.
 # voms-proxy-info requires this.
@@ -32,5 +32,4 @@ rm ~/.asetup
 # Site-specific variables (e.g. Frontier and Squid servers) are set based on
 # ATLAS_SITE_NAME. This auto-setup is only temporarily needed,
 # and will soon become automatic (I wonder when and how I will know?)
-export ATLAS_SITE_NAME=<%= @atlas_site %>
 . /cvmfs/atlas.cern.ch/repo/sw/local/bin/auto-setup

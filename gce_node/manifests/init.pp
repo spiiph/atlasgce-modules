@@ -44,7 +44,6 @@ class gce_node (
   }
 
   class { 'gce_node::grid_setup':
-    atlas_site => $atlas_site,
   }
 
   if $use_cvmfs == true {
