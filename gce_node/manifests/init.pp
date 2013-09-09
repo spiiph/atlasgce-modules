@@ -53,7 +53,7 @@ class gce_node (
     class { 'cvmfs::client':
       repositories => 'atlas.cern.ch,atlas-condb.cern.ch,grid.cern.ch',
       squidproxy => 'http://chrysaor.westgrid.ca:3128;http://cernvm-webfs.atlas-canada.ca:3128',
-      quota => 4000,
+      quota => 5000,
       debug => $debug,
       cvmfs_servers => $cvmfs_domain_servers,
     }
@@ -97,4 +97,18 @@ class gce_node (
       debug => $debug,
     }
   }
+
+  if $role == 'csnode' {
+    $my_sysctl_settings = {
+      "net.core.rmem_max" => { value => "16777216" },
+      "net.core.wmem_max" => { value => "16777216" }, 
+      "net.ipv4.tcp_rmem" => { value => "4096/t87380/t16777216" }, 
+      "net.ipv4.tcp_wmem" => { value => "4096/t65536/t16777216" }, 
+      "net.core.netdev_max_backlog" => { value => "30000" },
+      "net.ipv4.tcp_timestamps" => { value => "1" },
+      "net.ipv4.tcp_sack" => { value => "1" },
+    }
+    create_resources( sysctl::value, $my_sysctl_settings )
+  }
+  
 }
