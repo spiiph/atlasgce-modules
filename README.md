@@ -85,13 +85,21 @@ _Note: Detailed information about configurable parts of the `atlasgce-scripts` c
 ## Getting started
 
 1. Download `atlasgce-scripts`
-    git clone https://github.com/spiiph/atlasgce-scripts.git
+
+```
+git clone https://github.com/spiiph/atlasgce-scripts.git
+```    
+
 2. Download `atlasgce-modules` (Optional)
-    git clone https://github.com/spiiph/atlasgce-modules.git
+
+```
+git clone https://github.com/spiiph/atlasgce-modules.git
+```
+
 3. Enter the `atlasgce-scripts` directory and edit [`defaults.sh`](https://github.com/spiiph/atlasgce-scripts/blob/master/defaults.sh) to change the GCE configuration to reflect your project and cluster
 4. Edit the [`gce_node_head.pp`](https://github.com/spiiph/atlasgce-scripts/blob/master/gce_node_head.pp) and [`gce_node_worker.pp`](https://github.com/spiiph/atlasgce-scripts/blob/master/gce_node_worker.pp) to configure important options such as role, manager node address, XRootD redirector, PanDA settings, etc.
 5. Edit [`mount-head.sh`](https://github.com/spiiph/atlasgce-scripts/blob/master/mount-head.sh) and [`mount-worker.sh`](https://github.com/spiiph/atlasgce-scripts/blob/master/mount-worker.sh) to match your disk setup. (Remember to change the mounts in `gce_node_head.pp` and `gce_node_worker.pp` accordingly.)
-6. Edit [`modules.sh`](https://github.com/spiiph/atlasgce-scripts/blob/master/modules.sh) if you want to download the module repository in a non-standard way. _Note: if the repository format is changed from `git` to something else, the `update-cluster.sh` script also has to be updated._
+6. Edit [`modules.sh`](https://github.com/spiiph/atlasgce-scripts/blob/master/modules.sh) if you want to download the module repository in a non-standard way. _Note: if the repository format is changed from **git** to something else, the `update-cluster.sh` script also has to be updated._
 
 ## Managing the cluster
 
