@@ -28,7 +28,7 @@ Three different instance roles are available: The manager role (`head`), the wor
 The manager role consists of the following elements:
 
 * The [AutoPyFactory](https://svnweb.cern.ch/trac/panda/browser/panda-autopyfactory) service fetches jobs from a PanDA queue and submits them locally to Condor.
-* The [Condor](http://research.cs.wisc.edu/htcondor/) submit and collector services manage the distribution of subjobs over the worker nodes.
+* The [Condor](http://research.cs.wisc.edu/htcondor/) collector, negotiator, and schedd services manage job submission and the distribution of subjobs over the worker nodes.
 * The [XRootD](http://xrootd.slac.stanford.edu/) XRootD and Cluster Management services act as a local XRootD redirector and are responsible for accessing and caching input data files through the [Federated ATLAS XRootD system](https://twiki.cern.ch/twiki/bin/view/AtlasComputing/AtlasXrootdSystems). (Optional)
 * The [CernVM-FS](http://cernvm.cern.ch/portal/filesystem) service provides consistent access to ATLAS software. CernVM-FS is not strictly required for the manager role, but can be used for debugging the Condor services. (Optional)
 * [Compatibility packages](https://twiki.cern.ch/twiki/bin/view/AtlasComputing/RPMCompatSLC6) for running SLC5 binaries on SLC6.
@@ -88,7 +88,7 @@ _Note: Detailed information about configurable parts of the `atlasgce-scripts` c
 
 ```
 git clone https://github.com/spiiph/atlasgce-scripts.git
-```    
+```
 
 2. Download `atlasgce-modules` (Optional)
 
@@ -117,7 +117,7 @@ See the documentation in each subdirectory for detailed information about each m
 
 ## packagerepos
 
-The [packagerepos](https://github.com/spiiph/atlasgce-modules/tree/master/yumrepos) module manages package repositories containing extra software and compatibility libraries required to run ATLAS software. These include SLC repositories, CERN EPEL repositories, and repositories for HT Condor, CernVM-FS, and AutoPyFactory.
+The [packagerepos](https://github.com/spiiph/atlasgce-modules/tree/master/yumrepos) module manages package repositories containing extra software and compatibility libraries required to run ATLAS software. These include the SLC repositories and repositories for HT Condor, CernVM-FS, and AutoPyFactory.
 
 ## autofs and cvmfs
 
