@@ -46,11 +46,12 @@ class condor::client(
   $config = '/etc/condor/condor_config.local',
   $sysconfig = undef,
   $job_wrapper = undef,
-  $debug = undef
+  $debug = undef,
+  $javaexec = undef
 ) inherits condor
 {
   if $job_wrapper != undef {
-      $_job_wrapper = $job_wrapper
+    $_job_wrapper = $job_wrapper
   } else {
     if $osfamily == 'CernVM' {
       $_job_wrapper = '/opt/condor/libexec/jobwrapper.sh'
@@ -59,6 +60,15 @@ class condor::client(
     }
   }
 
+  if $javaexec != undef {
+    $_javaexec = $javaexec
+  } else {
+    if $osfamily == 'CernVM' {
+      $_javaexec = '/usr/lib/jvm/jre-1.6.0-openjdk.x86_64/bin/java'      
+    }
+  }
+
+  
   if $role == 'node' or $role == 'csnode' {
     # Create an user account for each condor slot
     $user_array = condor_user_array($slots)

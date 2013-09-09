@@ -35,6 +35,11 @@ DAEMON_LIST = MASTER, STARTD
 MaxJobRetirementTime = 3600 * 24 * 2
 SHUTDOWN_GRACEFUL_TIMEOUT = 3600 * 25 * 2
 
+## Point to the java executable.
+<% if @_javaexec -%>
+JAVA = <%= @_javaexec %>
+<% end -%>
+
 ### Job environment config
 USER_JOB_WRAPPER = <%= @_job_wrapper %>
 NUM_SLOTS = <%= @slots %>
