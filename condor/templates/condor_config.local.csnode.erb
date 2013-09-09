@@ -11,6 +11,14 @@ SEC_DAEMON_AUTHENTICATION_METHODS =
 SEC_CLIENT_AUTHENTICATION_METHODS =
 SEC_PASSWORD_FILE =
 
+## Execute spool directory. - Verify that these directory's exist - or change to desired location
+EXECUTE=/var/condor/execute
+LOCK=/var/condor/lock
+LOG=<%= @logdir %>
+RUN=<%= @rundir %>
+SPOOL=<%= @spooldir %>
+
+
 ###### You should not need to make changes below here ########
 
 HOSTALLOW_WRITE = $(FULL_HOSTNAME), $(CONDOR_HOST)

@@ -30,9 +30,6 @@ class condor (
   $user = 'condor',
   $group = 'condor',
   $homedir = '/var/lib/condor',
-  $logdir = '/var/log/condor',
-  $rundir = '/var/run/condor',
-  $spooldir = '/var/lib/condor/spool',
   $oldscipts = '/var/lib/condor/old-scripts'
 ){
   include packagerepos
@@ -68,30 +65,6 @@ class condor (
     require => [Group[$group], User[$user]],
   }
 
-  file { $logdir:
-    ensure => directory,
-    owner => $user,
-    group => $group,
-    mode => 0755,
-    require => [Group[$group], User[$user]],
-  }
-
-  file { $rundir:
-    ensure => directory,
-    owner => $user,
-    group => $group,
-    mode => 0755,
-    require => [Group[$group], User[$user]],
-  }
-
-  file { $spooldir:
-    ensure => directory,
-    owner => $user,
-    group => $group,
-    mode => 0755,
-    require => [Group[$group], User[$user]],
-  }
-
   file { $oldscipts:
     ensure => directory,
     owner => $user,
@@ -100,7 +73,4 @@ class condor (
     require => [Group[$group], User[$user]],
   }
 
-  
-
-  
 }

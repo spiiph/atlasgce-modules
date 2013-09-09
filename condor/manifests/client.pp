@@ -47,7 +47,10 @@ class condor::client(
   $sysconfig = undef,
   $job_wrapper = undef,
   $debug = undef,
-  $javaexec = undef
+  $javaexec = undef,
+  $logdir = '/var/log/condor',
+  $rundir = '/var/run/condor',
+  $spooldir = '/var/lib/condor/spool'
 ) inherits condor
 {
   if $job_wrapper != undef {
@@ -80,7 +83,7 @@ class condor::client(
     group => 'root',
     mode => 0644,
     content => template("condor/condor_config.local.${role}.erb"),
-    require => Class['condor'],
+    require => [Class['condor'],File[$logdir],File[$rundir],File[$spooldir]],
   }
 
   if $password {
@@ -131,6 +134,31 @@ class condor::client(
       require => $requires,
     }
   }
+
+  file { $logdir:
+    ensure => directory,
+    owner => $condor::user,
+    group => $condor::group,
+    mode => 0755,
+    require => [Group[$condor::group], User[$condor::user]],
+  }
+
+  file { $rundir:
+    ensure => directory,
+    owner => $condor::user,
+    group => $condor::group,
+    mode => 0755,
+    require => [Group[$condor::group], User[$condor::user]],
+  }
+
+  file { $spooldir:
+    ensure => directory,
+    owner => $condor::user,
+    group => $condor::group,
+    mode => 0755,
+    require => [Group[$condor::group], User[$condor::user]],
+  }
+  
 }
 
 define condor_user ($user = $name, $group = $name) {
@@ -150,4 +178,5 @@ define condor_user ($user = $name, $group = $name) {
     #message => "Created user and group for $user",
     #require => User[$user],
   #}
+
 }
