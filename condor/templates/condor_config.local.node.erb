@@ -52,7 +52,7 @@ ALLOW_WRITE = $(ALLOW_WRITE), submit-side@matchsession/*
 
 
 ### Job environment config
-USER_JOB_WRAPPER = <%= @job_wrapper %>
+USER_JOB_WRAPPER = <%= @_job_wrapper %>
 NUM_SLOTS = <%= @slots %>
 <% (1..@slots.to_i).each do |slot| -%>
 SLOT<%= slot %>_USER = slot<%= "%02d" % slot %>
