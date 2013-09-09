@@ -1,11 +1,7 @@
 # atlasgce-modules
 ## Description
 
-The [atlasgce-modules](https://github.com/spiiph/atlasgce-modules "atlasgce-modules") are  Puppet modules for contextualizing [ATLAS](http://atlas.ch/) analysis clusters. They are developed primarily for [Google Compute Engine (GCE)](https://cloud.google.com/products/compute-engine).
-
-## Detailed documentation
-
-See the documentation in each subdirectory for detailed information about each module.
+The `atlasgce-modules` are  Puppet modules for contextualizing [ATLAS](http://atlas.ch/) analysis clusters. They are developed primarily for [Google Compute Engine (GCE)](https://cloud.google.com/products/compute-engine).
 
 ## Operating system support
 
@@ -20,9 +16,10 @@ Work is also in progress to partially support [CernVM](http://cernvm.cern.ch/). 
 These modules have been developed for GCE, but support for other clouds can be impemented upon request.
 
 # Functionality
+
 ## Overview
 
-The [atlasgce-modules](https://github.com/spiiph/atlasgce-modules "atlasgce-modules") provide from-scratch contextualization on bare instances (virtual or physical) for analysis for the [ATLAS Experiment](http://atlas.ch).
+The `atlasgce-modules` provide from-scratch contextualization on bare instances (virtual or physical) for analysis for the [ATLAS Experiment](http://atlas.ch).
 
 Three different instance roles are available: The manager role (`head`), the worker role (`node`), and the worker role for a [Cloud Scheduler](http://cloudscheduler.org/) environment (`csnode`).
 
@@ -38,7 +35,7 @@ The manager role consists of the following elements:
 
 ## The worker role (`node`)
 
-The node role consists of the following elements:
+The worker role consists of the following elements:
 
 * The [Condor](http://research.cs.wisc.edu/htcondor/) startd service runs the individual subjobs as directed by the manager.
 * The [XRootD](http://xrootd.slac.stanford.edu/) XRootD, Cluster Management, and File Residency Management services are responsible for accessing input data files through the manager and download those that are not yet available in the cache.
@@ -46,6 +43,7 @@ The node role consists of the following elements:
 * [Compatibility packages](https://twiki.cern.ch/twiki/bin/view/AtlasComputing/RPMCompatSLC6) for running SLC5 binaries on SLC6.
 
 ## The Cloud Scheduler worker role (`csnode`)
+
 The Cloud Scheduler worker role consists of the following elements:
 
 * The [Condor](http://research.cs.wisc.edu/htcondor/) startd service runs the individual subjobs as directed by the Cloud Scheduler instance.
@@ -76,28 +74,56 @@ This means that the extra work of preparing machine images with the required sof
 
 See [What is Puppet?](https://puppetlabs.com/puppet/what-is-puppet/)
 
+# Usage
+
+This section describes suggested usage together with the [atlasgce-scripts](https://github.com/spiiph/atlasgce-scripts/). It describes how to configure GCE options, how to configure the node template and other parts of the bootstrapping procedure, and how to start, update, and stop a cluster.
+
+_Note: Configuration of the GCE project including adding SSH keys and configuring the firewall for incoming traffic (if necessary) is not covered here. Refer to the official [documentation](https://developers.google.com/compute/)._
+
+_Note: Detailed information about configurable parts of the `atlasgce-scripts` can be found in its [documentation](https://github.com/spiiph/atlasgce-scripts/)._
+
+## Getting started
+
+1. Download `atlasgce-scripts`
+    git clone https://github.com/spiiph/atlasgce-scripts.git
+2. Download `atlasgce-modules` (Optional)
+    git clone https://github.com/spiiph/atlasgce-modules.git
+3. Enter the `atlasgce-scripts` directory and edit [`defaults.sh`](https://github.com/spiiph/atlasgce-scripts/blob/master/defaults.sh) to change the GCE configuration to reflect your project and cluster
+4. Edit the [`gce_node_head.pp`](https://github.com/spiiph/atlasgce-scripts/blob/master/gce_node_head.pp) and [`gce_node_worker.pp`](https://github.com/spiiph/atlasgce-scripts/blob/master/gce_node_worker.pp) to configure important options such as role, manager node address, XRootD redirector, PanDA settings, etc.
+5. Edit [`mount-head.sh`](https://github.com/spiiph/atlasgce-scripts/blob/master/mount-head.sh) and [`mount-worker.sh`](https://github.com/spiiph/atlasgce-scripts/blob/master/mount-worker.sh) to match your disk setup. (Remember to change the mounts in `gce_node_head.pp` and `gce_node_worker.pp` accordingly.)
+6. Edit [`modules.sh`](https://github.com/spiiph/atlasgce-scripts/blob/master/modules.sh) if you want to download the module repository in a non-standard way. _Note: if the repository format is changed from `git` to something else, the `update-cluster.sh` script also has to be updated._
+
+## Managing the cluster
+
+Once the node template and bootstrapping procedure has been configured three commands are used to control the cluster. These commands read information they require (such as GCE project, number of worker nodes in the cluster, etc.) from [`defaults.sh`](https://github.com/spiiph/atlasgce-scripts/blob/master/defaults.sh).
+
+* `start-cluster.sh` &mdash; starts a manager node and worker nodes
+* `stop-cluster.sh` &mdash; deletes the manager node and worker nodes
+* `update-cluster.sh` &mdash; fetches updates to the module repository and applies these updates for the manager node worker nodes
+
 # Contents
+
+## Detailed module documentation
+
+See the documentation in each subdirectory for detailed information about each module.
+
 ## packagerepos
 
-Module to manage extra package repositories for Scienfic Linux CERN, CERN EPEL, CernVM-FS, Condor, and APF.
+The [packagerepos](https://github.com/spiiph/atlasgce-modules/tree/master/yumrepos) module manages package repositories containing extra software and compatibility libraries required to run ATLAS software. These include SLC repositories, CERN EPEL repositories, and repositories for HT Condor, CernVM-FS, and AutoPyFactory.
 
-autofs and cvmfs
-----------------
+## autofs and cvmfs
 
-Module to manage the CernVM-FS configuration and the autofs service.
+The [autofs](https://github.com/spiiph/atlasgce-modules/tree/master/autofs) and [cvmfs](https://github.com/spiiph/atlasgce-modules/tree/master/autofs) repositories manage the the CernVM-FS configuration and the autofs service.
 
-xrootd
-------
+## xrootd
 
-Module to manage the XRootD, Cluster Management, and File Residency Management configuration and services.
+The [xrootd](https://github.com/spiiph/atlasgce-modules/tree/master/xrootd) module manages configuration and services for XRootD, Cluster Management Service, and File Residency Management.
 
-condor
-------
+## condor
 
-Module to manage the HT Condor configuration and services.
+The [condor](https://github.com/spiiph/atlasgce-modules/tree/master/condor) module manages the HT Condor configuration and the collector, negotiator, schedd, and startd services.
 
-gce_node
---------
 
-Umbrella module to set up a VM on GCE to be either a head node or a worker node.
+## gce_node
 
+The [gce_node](https://github.com/spiiph/atlasgce-modules/tree/master/gce_node) module is an umbrella module to configure a machine for one of the specified roles. It is responsible for installing compatibility packages and doing any contextualization that is not directly tied to any of the other modules.
