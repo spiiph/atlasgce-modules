@@ -1,7 +1,7 @@
 # cvmfs
 ## Description
 
-The `cvmfs` module manages the [CernVM-FS](http://cernvm.cern.ch/portal/filesystem) configuration.
+The *cvmfs* module manages the [CernVM-FS](http://cernvm.cern.ch/portal/filesystem) configuration.
 
 ## Operating system support
 
@@ -9,12 +9,12 @@ Software package installation is only supported on RedHat based system, but the 
 
 ## Contents
 
-The `cvmfs` module does the following:
+The *cvmfs* module does the following:
 
 * Installs the CernVM-FS package (if supported)
 * Creates the `cvmfs` user and group and necessary directories
 * Clobbers `/etc/fuse.conf`
-* _"Instantiates"_ the `autofs` module with the `/cvmfs` mount point
+* _"Instantiates"_ the *autofs* module with the `/cvmfs` mount point
 * Writes the CernVM-FS configuration to `/etc/cvmfs/default.local`
 
 ## Variables and defaults

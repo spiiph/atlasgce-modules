@@ -1,7 +1,7 @@
 # condor
 ## Description
 
-The `condor` module manages the configuration and services for [Condor](http://research.cs.wisc.edu/htcondor/).
+The *condor* module manages the configuration and services for [Condor](http://research.cs.wisc.edu/htcondor/).
 
 ## Operating system support
 
@@ -9,7 +9,7 @@ Software package installation is only supported on RedHat based system, but the 
 
 ## Condor roles
 
-The `condor` module supports the following roles, all of which have their own `condor_config.local`. _Note: The `collector` and the `submit` roles have not been extensively tested._
+The *condor* module supports the following roles, all of which have their own `condor_config.local`. _Note: The `collector` and the `submit` roles have not been extensively tested._
 
 <table>
   <tr><td>`head`</td><td>Condor manager</td><td>collector, negotiator, schedd</td></tr>
@@ -21,10 +21,10 @@ The `condor` module supports the following roles, all of which have their own `c
 
 ## Contents
 
-The `condor` module does the following:
+The *condor* module does the following:
 
 * Installs the Condor package
-* Creates the `condor` user and group and necessary directories
+* Creates the `Condor` user and group and necessary directories
 * Creates Condor job execution users (`node` and `csnode` roles)
 * Creates the Condor pool password (optional)
 * Writes role specific configuration to `/etc/condor/condor_config.local`

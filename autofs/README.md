@@ -1,7 +1,7 @@
 # autofs
 ## Description
 
-The `autofs` module manages the [Autofs](http://www.autofs.org/) configuration for [CernVM-FS](http://cernvm.cern.ch/portal/filesystem).
+The *autofs* module manages the [Autofs](http://www.autofs.org/) configuration for [CernVM-FS](http://cernvm.cern.ch/portal/filesystem).
 
 ## Operating system support
 
@@ -9,9 +9,9 @@ Software package installation is only supported on RedHat based system, but the 
 
 ## Contents
 
-The `autofs` module does the following:
+The *autofs* module does the following:
 
-* Installs the Autofs package (if supported)
+* Installs the Autofs package
 * Adds Autofs mounts to `/etc/auto.master`
 * Starts the Autofs service
 

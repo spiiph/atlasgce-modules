@@ -1,7 +1,7 @@
 # apf
 ## Description
 
-The `apf` module manages the configuration and services for [AutoPyFactory](https://svnweb.cern.ch/trac/panda/browser/panda-autopyfactory).
+The *apf* module manages the configuration and services for [AutoPyFactory](https://svnweb.cern.ch/trac/panda/browser/panda-autopyfactory).
 
 ## Operating system support
 
@@ -9,7 +9,7 @@ Software package installation is only supported on RedHat based system, but the 
 
 ## Contents
 
-The `apf` module does the following:
+The *apf* module does the following:
 
 * Installs the AutoPyFactory package
 * Creates the `apf` user and group and necessary directories

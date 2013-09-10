@@ -1,7 +1,7 @@
 # packagerepos
 ## Description
 
-The `packagerepos` module manages package repositories containing extra software and compatibility libraries required to run ATLAS software. These include SLC repositories, CERN EPEL repositories, and repositories for HT Condor, CernVM-FS, and AutoPyFactory.
+The *packagerepos* module manages package repositories containing extra software and compatibility libraries required to run ATLAS software. These include SLC repositories, CERN EPEL repositories, and repositories for HT Condor, CernVM-FS, and AutoPyFactory.
 
 ## Operating system support
 
@@ -10,7 +10,7 @@ failing for other operating systems.
 
 ## Contents
 
-The `packagerepos` module adds the following Yum repositories to RedHat based
+The *packagerepos* module adds the following Yum repositories to RedHat based
 systems:
 
 * [SLC6](http://linux.web.cern.ch/linux/scientific6/) repositories (`slc6-os`, `slc6-updates`, `slc6-extras`, `slc6-cernonly`, `epel`, `epel-testing`)

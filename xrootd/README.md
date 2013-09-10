@@ -1,7 +1,7 @@
 # xrootd
 ## Description
 
-The `xrootd` module manages the configuration and services for [XRootD](http://xrootd.slac.stanford.edu/).
+The *xrootd* module manages the configuration and services for [XRootD](http://xrootd.slac.stanford.edu/).
 
 ## Operating system support
 
@@ -9,7 +9,7 @@ Software package installation is only supported on RedHat based system, but the 
 
 ## Contents
 
-The `xrootd` module does the following:
+The *xrootd* module does the following:
 
 * Installs the XRootD packages
 * Creates the `xrootd` user and group and necessary directories
