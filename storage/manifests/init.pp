@@ -16,6 +16,11 @@ class storage(
 )
 {
 
+  file {$mountpoint:
+    ensure => directory,
+  }
+    
+  
   if $cloud_type == 'OpenStack' {
     mount {$mountpoint:
       ensure  => 'present',
@@ -24,6 +29,7 @@ class storage(
       options => 'noatime',
       dump    => 1,
       pass    => 0,
+      require => File[$mountpoint],
     }
   }
   
@@ -35,6 +41,7 @@ class storage(
       options => 'noatime',
       dump    => 1,
       pass    => 0,
+      require => File[$mountpoint],
     }
   }
 
