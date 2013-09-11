@@ -98,17 +98,14 @@ class gce_node (
     }
   }
 
-#  if $role == 'csnode' {
-#    $my_sysctl_settings = {
-#      "net.core.rmem_max" => { value => "16777216" },
-#      "net.core.wmem_max" => { value => "16777216" }, 
-#      "net.ipv4.tcp_rmem" => { value => "4096/t87380/t16777216" }, 
-#      "net.ipv4.tcp_wmem" => { value => "4096/t65536/t16777216" }, 
-#      "net.core.netdev_max_backlog" => { value => "30000" },
-#      "net.ipv4.tcp_timestamps" => { value => "1" },
-#      "net.ipv4.tcp_sack" => { value => "1" },
-#    }
-#    create_resources( sysctl::value, $my_sysctl_settings )
-#  }
-  
+ if $role == 'csnode' {
+    sysctl {'net.core.rmem_max': value => "16777216" }
+    sysctl {'net.core.wmem_max': value => "16777216" } 
+    sysctl {'net.ipv4.tcp_rmem': value => "4096 87380 16777216" }
+    sysctl {'net.ipv4.tcp_wmem': value => "4096 65536 16777216" }
+    sysctl {'net.core.netdev_max_backlog': value => "30000" }
+    sysctl {'net.ipv4.tcp_timestamps': value => "1" }
+    sysctl {'net.ipv4.tcp_sack': value => "1" }
+  }
+
 }
