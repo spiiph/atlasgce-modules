@@ -3,8 +3,10 @@ if [[ ! "$USER" =~ ^slot[0-9]+$ ]] ; then
   return 0
 fi
 
-#export GLOBUS_FTP_CLIENT_GRIDFTP2=true
+<% if @use_gridftp2 -%>
+export GLOBUS_FTP_CLIENT_GRIDFTP2=true
 
+<% end -%>
 # Workaround for condor not setting $HOME for worker sessions.
 # voms-proxy-info requires this.
 if [[ -z "$HOME" ]] ; then
@@ -26,11 +28,13 @@ export ALRB_useGridSW=gLite
 
 ## Fix for using AtlasLocalRootBase with a kit
 #unset  AtlasSetupSite
-#
 rm ~/.asetup
 
+<% if @atlas_site -%>
 # Site-specific variables (e.g. Frontier and Squid servers) are set based on
-# ATLAS_SITE_NAME. This auto-setup is only temporarily needed,
-# and will soon become automatic (I wonder when and how I will know?)
+# ATLAS_SITE_NAME.
 export ATLAS_SITE_NAME=<%= @atlas_site %>
-. /cvmfs/atlas.cern.ch/repo/sw/local/bin/auto-setup
+
+<% end -%>
+# This auto-setup should eventually become automatic
+source /cvmfs/atlas.cern.ch/repo/sw/local/bin/auto-setup
