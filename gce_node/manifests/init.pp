@@ -28,12 +28,12 @@ class gce_node (
   $condor_slots,
   $use_xrootd = true,
   $xrootd_global_redirector = undef,
-  $atlas_site,
   $use_apf = true,
   $panda_site = undef,
   $panda_queue = undef,
   $panda_cloud = undef,
   $panda_administrator_email = undef,
+  $atlas_site = undef,
   $debug = false
 ){
 
@@ -44,6 +44,10 @@ class gce_node (
 
   class { 'gce_node::grid_setup':
     atlas_site => $atlas_site,
+    use_gridftp2 => $role ? {
+      'csnode' => true,
+      default => false,
+    },
   }
 
   class { 'cvmfs::client':
