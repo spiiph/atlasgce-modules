@@ -35,7 +35,8 @@ class gce_node (
   $panda_queue = undef,
   $panda_cloud = undef,
   $panda_administrator_email = undef,
-  $debug = false
+  $debug = false,
+  $cloud_type = undef
 ){
 
   class { 'gce_node::packages':
@@ -106,6 +107,10 @@ class gce_node (
     sysctl {'net.core.netdev_max_backlog': value => "30000" }
     sysctl {'net.ipv4.tcp_timestamps': value => "1" }
     sysctl {'net.ipv4.tcp_sack': value => "1" }
+
+    class {'storage':
+      cloud_type => $cloud_type,
+    }
   }
 
 }
