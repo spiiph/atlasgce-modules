@@ -36,7 +36,8 @@ class gce_node (
   $panda_cloud = undef,
   $panda_administrator_email = undef,
   $debug = false,
-  $cloud_type = undef
+  $cloud_type = undef,
+  $condor_vmtype = 'cernvm-batch-node-2.7.2-x86_64'
 ){
 
   class { 'gce_node::packages':
@@ -76,6 +77,7 @@ class gce_node (
       use_gsi_security => $condor_use_gsi,
       slots => $condor_slots,
       debug => $debug,
+      vmtype => $condor_vmtype
   }
 
   if $osfamily == 'CernVM' {

@@ -50,7 +50,8 @@ class condor::client(
   $javaexec = undef,
   $logdir = '/var/log/condor',
   $rundir = '/var/run/condor',
-  $spooldir = '/var/lib/condor/spool'
+  $spooldir = '/var/lib/condor/spool',
+  $vmtype
 ) inherits condor
 {
   if $job_wrapper != undef {
