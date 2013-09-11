@@ -36,7 +36,6 @@ class gce_node (
   $panda_cloud = undef,
   $panda_administrator_email = undef,
   $debug = false,
-  $cloud_type = undef,
   $condor_vmtype = 'cernvm-batch-node-2.7.2-x86_64'
 ){
 
