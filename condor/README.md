@@ -37,13 +37,13 @@ The *condor* module does the following:
 Here are some notable variables and their default values
 
 <table>
-  <tr><td>**Name**</td><td>**Description**</td><td>**Default**</td></tr>
+  <tr><td><strong>Name</strong></td><td>**Description**</td><td>**Default**</td></tr>
   <tr><td><code>head</code></td><td>The manager node</td><td><em>None</em></td></tr>
   <tr><td><code>role</code></td><td>The role of this node</td><td><em>None</em></td></tr>
-  <tr><td><code>password</code></td><td>Condor pool password</td><td>`undef`</td></tr>
-  <tr><td><code>slots</code></td><td>Condor slots per machine (&le; #CPUs)</td><td>`32`</td></tr>
-  <tr><td><code>collectors</code></td><td>Number of collector daemons</td><td>`undef`</td></tr>
-  <tr><td><code>node_type</code></td><code>NodeType</code> startd attribute<td></td><td><code>undef</code></td></tr>
+  <tr><td><code>password</code></td><td>Condor pool password</td><td><code>undef</code></td></tr>
+  <tr><td><code>slots</code></td><td>Condor slots per machine (&le; #CPUs)</td><td><code>32</code></td></tr>
+  <tr><td><code>collectors</code></td><td>Number of collector daemons</td><td><code>undef</code></td></tr>
+  <tr><td><code>node_type</code></td><td><code>NodeType</code> startd attribute</td><td><code>undef</code></td></tr>
   <tr><td><code>use_gsi_security</code></td><td>Turn on GSI security</td><td><code>false</code></td></tr>
   <tr><td><code>debug</code></td><td>Turn on debug logging</td><td><code>undef</code></td></tr>
 </table>

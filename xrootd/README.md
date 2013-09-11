@@ -29,7 +29,7 @@ If the machine role is `node` it also does the following:
 Here are some notable variables and their default values
 
 <table>
-  <tr><td>**Name**</td><td>**Description**</td><td>**Default**</td></tr>
+  <tr><td><strong>Name</strong></td><td>**Description**</td><td>**Default**</td></tr>
   <tr><td><code>redirector</code></td><td>The address of the manager machine</td><td><em>None</em></td></tr>
   <tr><td><code>role</code></td><td>The role of this machine</td><td><em>None</em></td></tr>
   <tr><td><code>storage_path</code></td><td>XRootD storage path</td><td><code>/atlas</code></td></tr>

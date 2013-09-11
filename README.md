@@ -80,7 +80,7 @@ This section describes suggested usage together with the [*atlasgce-scripts*](ht
 
 _Note: Configuration of the GCE project including adding SSH keys and configuring the firewall for incoming traffic (if necessary) is not covered here. Refer to the official [documentation](https://developers.google.com/compute/)._
 
-_Note: Detailed information about configurable parts of the _atlasgce-scripts_ can be found in its [documentation](https://github.com/spiiph/atlasgce-scripts/)._
+_Note: Detailed information about configurable parts of the_ atlasgce-scripts _can be found in its [documentation](https://github.com/spiiph/atlasgce-scripts/)._
 
 ## Getting started
 

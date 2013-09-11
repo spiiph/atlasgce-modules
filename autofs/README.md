@@ -20,6 +20,6 @@ The *autofs* module does the following:
 Here are some notable variables and their default values
 
 <table>
-  <tr><td>**Name**</td><td>**Description**</td><td>**Default**</td></tr>
+  <tr><td><strong>Name</strong></td><td>**Description**</td><td>**Default**</td></tr>
   <tr><td><code>mounts</code></td><td>A dictionary of mount point and configuration file pairs</td><td><code>undef</code></td></tr>
 </table>
