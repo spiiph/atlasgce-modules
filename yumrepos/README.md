@@ -5,7 +5,7 @@ The *packagerepos* module manages package repositories containing extra software
 
 ## Operating system support
 
-This module only supports RedHat based operating system, but tries to avoid
+This module only supports RedHat based operating system but tries to avoid
 failing for other operating systems.
 
 ## Contents
