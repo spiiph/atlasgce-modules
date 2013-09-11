@@ -23,7 +23,7 @@ The *gce_node* module does the following:
 Here are some notable variables and their default values
 
 <table>
-  <tr><td><strong>Name</strong></td><td>**Description**</td><td>**Default**</td></tr>
+  <tr><td><strong>Name</strong></td><td><strong>Description</strong></td><td><strong>Default</strong></td></tr>
   <tr><td><code>head</code></td><td>The manager node of the cluster</td><td><em>None</em></td></tr>
   <tr><td><code>role</code></td><td>The role of this node</td><td><em>None</em></td></tr>
   <tr><td><code>use_cvmfs</code></td><td>Use the <em>cvmfs</em> module</td><td><code>true</code></td></tr>

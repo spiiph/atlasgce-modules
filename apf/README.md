@@ -24,7 +24,7 @@ The *apf* module does the following:
 Here are some notable variables and their default values:
 
 <table>
-  <tr><td><strong>Name</strong></td><td>**Description**</td><td>**Default**</td></tr>
+  <tr><td><strong>Name</strong></td><td><strong>Description</strong></td><td><strong>Default</strong></td></tr>
   <tr><td><code>panda_site</code></td><td>The PanDA site name</td><td><em>None</em></td></tr>
   <tr><td><code>panda_queue</code></td><td>The PanDA queue name</td><td><em>None</em></td></tr>
   <tr><td><code>panda_cloud</code></td><td>The PanDA cloud that the site belongs to</td><td><em>None</em></td></tr>

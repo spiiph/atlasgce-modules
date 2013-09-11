@@ -22,7 +22,7 @@ The *cvmfs* module does the following:
 Here are some notable variables and their default values
 
 <table>
-  <tr><td><strong>Name</strong></td><td>**Description**</td><td>**Default**</td></tr>
+  <tr><td><strong>Name</strong></td><td><strong>Description</strong></td><td><strong>Default</strong></td></tr>
   <tr><td><code>repositories</code></td><td>Comma separated list of CernVM-FS repositories</td><td><em>None</em></td></tr>
   <tr><td><code>squidproxy</code></td><td>Comma separated list of squid proxies</td><td><code>undef</code></td></tr>
   <tr><td><code>quota</code></td><td>Quota in MB</td><td><code>undef</code></td></tr>
