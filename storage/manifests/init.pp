@@ -33,7 +33,7 @@ class storage(
     }
   }
   
-  if $cloud_type == 'Nimbus' {
+  if $cloud_type == 'nimbus' {
     mount {$mountpoint:
       ensure  => 'present',
       device  => 'LABEL=blankpartition0',
