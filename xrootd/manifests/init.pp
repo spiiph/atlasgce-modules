@@ -33,11 +33,13 @@ class xrootd (
     $rundir = '/var/run/xrootd',
     $logdir = '/var/log/xrootd'
 ){
-  include yumrepos
+  include packagerepos
 
-  package { ['xrootd', 'xrootd-client']:
-    ensure => installed,
-    require => Yumrepo[epel],
+  if $osfamily != 'CernVM' {
+    package { ['xrootd', 'xrootd-client']:
+      ensure => installed,
+      require => Class[Packagerepos]
+    }
   }
 
   group { $group:
