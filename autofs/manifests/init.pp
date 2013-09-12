@@ -16,9 +16,12 @@
 
 class autofs
 {
-  include yumrepos
+  include packagerepos
 
-  package { 'autofs':
-    ensure => installed,
+  if $osfamily != 'CernVM' {
+    package { 'autofs':
+      ensure => installed,
+      require => Class[Packagerepos]
+    }
   }
 }

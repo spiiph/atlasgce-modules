@@ -26,11 +26,13 @@ class apf (
   $homedir = '/var/lib/apf',
   $logdir = '/var/log/apf',
 ){
-  include yumrepos
+  include packagerepos
 
-  package { 'panda-autopyfactory':
-    ensure => installed,
-    require => Yumrepo[racf-grid-production],
+  if $osfamily != 'CernVM' {
+    package { 'panda-autopyfactory':
+      ensure => installed,
+      require => Class[Packagerepos]
+    }
   }
 
   group { $group:

@@ -32,11 +32,13 @@ class condor (
     $homedir = '/var/lib/condor',
     $logdir = '/var/log/condor'
 ){
-  include yumrepos
+  include packagerepos
 
-  package { 'condor':
-    ensure => installed,
-    require => Yumrepo[htcondor],
+  if $osfamily != 'CernVM' {
+    package { 'condor':
+      ensure => installed,
+      require => Class[Packagerepos]
+    }
   }
 
   group { $group:
