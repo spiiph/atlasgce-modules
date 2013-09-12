@@ -23,10 +23,10 @@ class storage(
   
   if $cloud_type == 'OpenStack' {
     mount {$mountpoint:
-      ensure  => 'present',
+      ensure  => 'mounted',
       device  => 'LABEL=ephemeral0',
       fstype  => 'ext4',
-      options => 'noatime',
+      options => 'noatime,noauto',
       dump    => 1,
       pass    => 0,
       require => File[$mountpoint],
@@ -35,10 +35,10 @@ class storage(
   
   if $cloud_type == 'nimbus' {
     mount {$mountpoint:
-      ensure  => 'present',
+      ensure  => 'mounted',
       device  => 'LABEL=blankpartition0',
       fstype  => 'ext2',
-      options => 'noatime',
+      options => 'noatime,noauto',
       dump    => 1,
       pass    => 0,
       require => File[$mountpoint],
