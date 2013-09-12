@@ -19,7 +19,7 @@
 
 class autofs::client(
     $master_conf = '/etc/auto.master',
-    $mounts = undef,
+    $mounts = undef
 ) inherits autofs
 {
   file { $master_conf:
@@ -32,7 +32,7 @@ class autofs::client(
   service { 'autofs':
     enable => true,
     ensure => running,
-    require => Package[autofs],
+    require => Class[autofs],
     subscribe => File[$master_conf],
   }
 }
