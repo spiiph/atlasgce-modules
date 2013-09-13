@@ -45,17 +45,16 @@ class condor::client(
   $use_gsi_security = false,
   $config = '/etc/condor/condor_config.local',
   $sysconfig = undef,
-  $job_wrapper = undef,
+  $job_wrapper_in = undef,
   $debug = undef
 ) inherits condor
 {
-  if $job_wrapper != undef {
-      $_job_wrapper = $job_wrapper
+  if $job_wrapper_in != undef {
+      $job_wrapper = $job_wrapper_in
   } else {
-    if $osfamily == 'CernVM' {
-      $_job_wrapper = '/opt/condor/libexec/jobwrapper.sh'
-    } else {
-      $_job_wrapper = '/usr/libexec/condor/jobwrapper.sh'
+    $job_wrapper = $osfamily ? {
+      'CernVM' => '/opt/condor/libexec/jobwrapper.sh',
+      default => '/usr/libexec/condor/jobwrapper.sh',
     }
   }
 
@@ -90,7 +89,7 @@ class condor::client(
     }
   }
 
-  file { $_job_wrapper:
+  file { $job_wrapper:
     owner => 'root',
     group => 'root',
     mode => 0755,
@@ -117,7 +116,7 @@ class condor::client(
     service { 'condor':
       ensure => running,
       enable => true,
-      subscribe => File[$config, $_job_wrapper],
+      subscribe => File[$config, $job_wrapper],
       require => $requires,
     }
   }
