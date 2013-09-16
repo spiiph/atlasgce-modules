@@ -1,6 +1,7 @@
 class gce_node::grid_setup (
   $use_emi_grid_software = true,
-  $setup_file = '/etc/profile.d/grid-setup.sh'
+  $setup_file = '/etc/profile.d/grid-setup.sh',
+  $security_dir = '/etc/grid-security'
 )
 {
   file { $setup_file:
@@ -9,5 +10,31 @@ class gce_node::grid_setup (
     mode => 0644,
     content => template('gce_node/grid-setup.sh.erb'),
   }
+
+  if $gce_node::role == 'csnode' {
+    file {$security_dir:
+      ensure => directory,
+      owner => root,
+      group => root,
+      mode => 0755,
+    }
+    
+    file {'hostcert.pem':
+      path => "${security_dir}/hostcert.pem",
+      ensure => present,
+      owner => root,
+      group => root,
+      mode => 0644,
+    }
+
+    file {'hostkey.pem':
+      path => "${security_dir}/hostkey.prm",
+      ensure => present,
+      owner => root,
+      group => root,
+      mode => 0644,
+    }
+  }
+  
 }
 
