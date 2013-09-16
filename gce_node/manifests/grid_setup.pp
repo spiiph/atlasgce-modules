@@ -25,15 +25,27 @@ class gce_node::grid_setup (
       owner => root,
       group => root,
       mode => 0644,
+      require => File[$security_dir],
     }
 
     file {'hostkey.pem':
-      path => "${security_dir}/hostkey.prm",
+      path => "${security_dir}/hostkey.pem",
       ensure => present,
       owner => root,
       group => root,
       mode => 0644,
+      require => File[$security_dir],
     }
+    
+    file {'certificates':
+      path => "${security_dir}/certificates",
+      ensure => directory,
+      owner => root,
+      group => root,
+      mode => 0755,
+      require => File[$security_dir],
+    }
+
   }
   
 }
