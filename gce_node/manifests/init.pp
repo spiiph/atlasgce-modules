@@ -69,6 +69,11 @@ class gce_node (
     }
   }
 
+  if $gce_node::role =='csnode' and $gce_node::cloud_type == 'OpenStack' {
+    class {'gce_node::context_helper':
+    }
+  }
+  
   class { 'condor::client':
       head => $head,
       role => $role,
