@@ -1,0 +1,9 @@
+Facter.add("cloud_type") do
+  has_weight 100
+  setcode do
+    # Check for existance of '/etc/distro-release' and check if it's CernVM
+    if File.exists?('/etc/condor/central_manager')
+      Facter::Util::Resolution.exec("cat /etc/condor/central_manager")
+    end
+  end
+end

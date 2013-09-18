@@ -122,6 +122,12 @@ class condor::client(
       source => 'puppet:///modules/condor/condor.init.d',
       require => Class['condor'],
     }
+    service { 'condor':
+      ensure => running,
+      enable => true,
+      subscribe => File[$config, $_job_wrapper],
+      require => File['/etc/init.d/condor'],
+    }
   } else {
     if $password {
       $requires = [Exec[pool_password]]
