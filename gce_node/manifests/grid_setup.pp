@@ -33,7 +33,7 @@ class gce_node::grid_setup (
       ensure => present,
       owner => root,
       group => root,
-      mode => 0644,
+      mode => 0600,
       require => File[$security_dir],
     }
     
