@@ -32,8 +32,17 @@ class gce_node::context_helper{
     require => Exec['context_installer'],
   }
 
+  file {'/usr/bin/contexthelper':
+    ensure => file,
+    source => "puppet:///modules/gce_node/contexthelper",
+    owner => root,
+    group => root,
+    mode => 0755,
+    require => Exec['context_installer'],
+  }
+
   service {'context':
-    require => File['/etc/init.d/context'],
+    require => [File['/etc/init.d/context'],File['/usr/bin/contexthelper']],
     ensure => running,
     enable => true,
     provider => init,
