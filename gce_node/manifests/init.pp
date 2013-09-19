@@ -69,11 +69,6 @@ class gce_node (
     }
   }
 
-  if $gce_node::role =='csnode' and $gce_node::cloud_type == 'OpenStack' {
-    class {'gce_node::context_helper':
-    }
-  }
-  
   class { 'condor::client':
       head => $head,
       role => $role,
@@ -106,17 +101,25 @@ class gce_node (
   }
 
  if $role == 'csnode' {
-    sysctl {'net.core.rmem_max': value => "16777216" }
-    sysctl {'net.core.wmem_max': value => "16777216" } 
-    sysctl {'net.ipv4.tcp_rmem': value => "4096 87380 16777216" }
-    sysctl {'net.ipv4.tcp_wmem': value => "4096 65536 16777216" }
-    sysctl {'net.core.netdev_max_backlog': value => "30000" }
-    sysctl {'net.ipv4.tcp_timestamps': value => "1" }
-    sysctl {'net.ipv4.tcp_sack': value => "1" }
+   if $gce_node::cloud_type == 'OpenStack' {
+     class {'gce_node::context_helper':
+     }
+   }
+   
+   sysctl {'net.core.rmem_max': value => "16777216" }
+   sysctl {'net.core.wmem_max': value => "16777216" } 
+   sysctl {'net.ipv4.tcp_rmem': value => "4096 87380 16777216" }
+   sysctl {'net.ipv4.tcp_wmem': value => "4096 65536 16777216" }
+   sysctl {'net.core.netdev_max_backlog': value => "30000" }
+   sysctl {'net.ipv4.tcp_timestamps': value => "1" }
+   sysctl {'net.ipv4.tcp_sack': value => "1" }
 
-    class {'storage':
-      cloud_type => $cloud_type,
-    }
-  }
+   exec {'ip link set eth0 txqueuelen 10000':
+     path => '/sbin',
+   }
 
+   class {'storage':
+     cloud_type => $cloud_type,
+   }
+ }
 }
