@@ -101,9 +101,7 @@ class gce_node (
   }
 
  if $role == 'csnode' {
-   if $metadata_server == '169.254.169.254' {
-     class {'gce_node::context_helper': }
-   }
+   class {'gce_node::context_helper': }
    
    sysctl {'net.core.rmem_max': value => "16777216" }
    sysctl {'net.core.wmem_max': value => "16777216" } 
