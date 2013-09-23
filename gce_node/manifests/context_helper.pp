@@ -17,9 +17,8 @@ class gce_node::context_helper{
 
   exec {'context_installer':
     command => 'python /tmp/setup.py install',
-    require => [File['/tmp/setup.py'],File['/tmp/contexthelper']],
+    require => [File['/tmp/setup.py'],File['/tmp/contexthelper'],File['/tmp/context']],
     creates => "/etc/init.d/context",
-    before => Service['context'],
     path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin',
     cwd => '/tmp',
   }
@@ -46,7 +45,7 @@ class gce_node::context_helper{
     ensure => running,
     enable => true,
     provider => init,
-    notify => Class['condor::client'],
+    before => [Class['condor::client'],Class['storage']],
   }
   
 }
