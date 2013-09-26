@@ -126,7 +126,7 @@ class condor::client(
       ensure => running,
       enable => true,
       provider => init,
-      subscribe => File[$config, $_job_wrapper],
+      subscribe => File[$config, $_job_wrapper, '/etc/init.d/condor'],
       require => File['/etc/init.d/condor'],
     }
   } else {
