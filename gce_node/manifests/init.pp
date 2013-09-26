@@ -35,8 +35,9 @@ class gce_node (
   $panda_queue = undef,
   $panda_cloud = undef,
   $panda_administrator_email = undef,
-  $debug = false,
   $condor_vmtype = 'cernvm-batch-node-2.7.2-x86_64'
+  $atlas_site = undef,
+  $debug = false
 ){
 
   class { 'gce_node::packages':
@@ -45,6 +46,11 @@ class gce_node (
   }
 
   class { 'gce_node::grid_setup':
+    atlas_site => $atlas_site,
+    use_gridftp2 => $role ? {
+      'csnode' => true,
+      default => false,
+    },
   }
 
   class {'gce_node::clock_setup':
