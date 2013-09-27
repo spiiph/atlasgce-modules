@@ -460,7 +460,7 @@ verify_execute () {
 # Start condor.
 start() {
         set_hostkey_permissions
-	setup_on_ec2
+	<% if cloud_type != "gce" %>	setup_on_ec2<% end %>
 	setup_ccb
 	set_central_manager $CENTRAL_MANAGER
         setup_vmtype $IMAGE_METADATA
