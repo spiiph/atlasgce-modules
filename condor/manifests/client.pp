@@ -72,6 +72,12 @@ class condor::client(
     }
   }
 
+  $condor_config_val = $osfamily ? {
+    'cernvm' => '/opt/condor/bin/condor_config_val',
+    default  => '/usr/bin/condor_config_val',
+  },
+  
+  
   
   if $role == 'node' or $role == 'csnode' {
     # Create an user account for each condor slot
@@ -119,7 +125,7 @@ class condor::client(
       owner => 'root',
       group => 'root',
       mode => 0755,
-      source => 'puppet:///modules/condor/condor.init.d',
+      content => template("condor/condor.erb"),
       require => Class['condor'],
     }
     service { 'condor':
