@@ -75,7 +75,7 @@ class condor::client(
   $condor_config_val = $osfamily ? {
     'cernvm' => '/opt/condor/bin/condor_config_val',
     default  => '/usr/bin/condor_config_val',
-  },
+  }
   
   
   
