@@ -1,10 +1,21 @@
 # Local config for Cloud Scheduler
 
 ## Set this to the name you would like to give your VM
-VMType = "GCE"
+VMType = "<%= @vmtype %>"
 
 ##  What machine is your central manager? - will be contextualized by Cloud Scheduler
-CONDOR_HOST=your.central.manager
+<% if @central_manager -%>
+CONDOR_HOST=<%= @central_manager %>
+<% else -%>
+CONDOR_HOST=ars
+<% end -%>
+
+## Execute spool directory. - Verify that these directory's exist - or change to desired location
+LOCK=/var/lock/condor
+LOG=<%= @logdir %>
+RUN=<%= @rundir %>
+SPOOL=<%= @spooldir %>
+EXECUTE=/scratch/condor-execute
 
 SEC_DAEMON_AUTHENTICATION =
 SEC_DAEMON_AUTHENTICATION_METHODS =
@@ -35,17 +46,7 @@ DAEMON_LIST = MASTER, STARTD
 MaxJobRetirementTime = 3600 * 24 * 2
 SHUTDOWN_GRACEFUL_TIMEOUT = 3600 * 25 * 2
 
-### Job environment config
-USER_JOB_WRAPPER = <%= @job_wrapper %>
-NUM_SLOTS = <%= @slots %>
-<% (1..@slots.to_i).each do |slot| -%>
-SLOT<%= slot %>_USER = slot<%= "%02d" % slot %>
-<% end -%>
-DEDICATED_EXECUTE_ACCOUNT_REGEXP = slot[0-9]+
-STARTER_ALLOW_RUNAS_OWNER = False
-EXECUTE = <%= @homedir %>/execute
-
-## These varibales tells condor which certificate to
+## These varibales tells condor which certificate to 
 ## use to GSI authenticate this host.
 ##
 ## Note that the /etc/init.d/condor startup script
@@ -67,3 +68,16 @@ STARTD_ATTRS = COLLECTOR_HOST_STRING VMType
 ## Ephemeral port specifications:
 HIGHPORT = 41000
 LOWPORT = 40000
+
+## Point to the java executable.
+<% if @_javaexec -%>
+JAVA = <%= @_javaexec %>
+<% end -%>
+
+## Job slot/user accounts:
+STARTER_ALLOW_RUNAS_OWNER = False
+DEDICATED_EXECUTE_ACCOUNT_REGEXP = slot[0-9]+
+USER_JOB_WRAPPER = <%= @_job_wrapper %>
+<% (1..@slots.to_i).each do |slot| -%>
+SLOT<%= slot %>_USER = slot<%= "%02d" % slot %>
+<% end -%>

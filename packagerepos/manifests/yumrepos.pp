@@ -108,4 +108,4 @@ class packagerepos::yumrepos {
   }
 }
 
-class { 'yumrepos': }
+#class { 'yumrepos': }

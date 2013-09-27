@@ -65,7 +65,7 @@ START_REQUIREMENT=`cat /etc/condor/start_req_config 2>/dev/null`
 CONDOR_CONFIG=/etc/condor/condor_config
 
 # Path to condor_config_val
-CONDOR_CONFIG_VAL=/usr/bin/condor_config_val
+CONDOR_CONFIG_VAL=/opt/condor/bin/condor_config_val
 
 # Path to condor_config.local.modifications
 CONDOR_CONFIG_LOCAL_MODIFS=/etc/condor/condor_config.local.modifications
@@ -411,8 +411,8 @@ setup_on_ec2() {
 				replace_or_append "PRIVATE_NETWORK_INTERFACE" "PRIVATE_NETWORK_INTERFACE=$private_network_interface" $local_file
 			fi
 		else
-			# Set hostname to instance id when we're using private net
-			EXTHOSTNAME=`curl -s http://$EC2_METADATA/latest/meta-data/instance-id`
+			# EXTHOSTNAME=`curl -s http://$EC2_METADATA/latest/meta-data/instance-id`
+			EXTHOSTNAME=`curl -s http://$EC2_METADATA/latest/meta-data/public-hostname`
 			VALID_ID=$?
 			if [ $VALID_ID -eq 0 ] && [[ $EXTHOSTNAME != ??xml* ]] && [[ $EXTHOSTNAME != ?html* ]] ; then
 				hostname $EXTHOSTNAME
