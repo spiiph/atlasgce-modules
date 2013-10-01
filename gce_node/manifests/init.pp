@@ -29,6 +29,7 @@ class gce_node (
   $condor_slots,
   $use_xrootd = true,
   $xrootd_global_redirector = undef,
+  $cvmfs_domain_servers = undef,
   $use_apf = true,
   $panda_site = undef,
   $panda_queue = undef,
@@ -56,7 +57,9 @@ class gce_node (
 
   if $use_cvmfs == true {
     class { 'cvmfs::client':
-      repositories => 'atlas.cern.ch,atlas-condb.cern.ch',
+      repositories => 'atlas.cern.ch,atlas-condb.cern.ch,grid.cern.ch',
+      cvmfs_servers => $cvmfs_domain_servers,
+      quota => 5000,
       debug => $debug,
     }
   }
