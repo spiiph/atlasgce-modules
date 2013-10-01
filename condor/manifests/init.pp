@@ -27,10 +27,10 @@
 # clouds)
 
 class condor (
-    $user = 'condor',
-    $group = 'condor',
-    $homedir = '/var/lib/condor',
-    $logdir = '/var/log/condor'
+  $user = 'condor',
+  $group = 'condor',
+  $homedir = '/var/lib/condor',
+  $oldscipts = '/var/lib/condor/old-scripts'
 ){
   include packagerepos
 
@@ -65,11 +65,12 @@ class condor (
     require => [Group[$group], User[$user]],
   }
 
-  file { $logdir:
+  file { $oldscipts:
     ensure => directory,
     owner => $user,
     group => $group,
     mode => 0755,
     require => [Group[$group], User[$user]],
   }
+
 }

@@ -1,7 +1,7 @@
 # Local config for Cloud Scheduler
 
 ## Set this to the name you would like to give your VM
-VMType = "GCE"
+VMType = "<%= @vmtype %>"
 
 ##  What machine is your central manager? - will be contextualized by Cloud Scheduler
 CONDOR_HOST=your.central.manager
@@ -10,6 +10,14 @@ SEC_DAEMON_AUTHENTICATION =
 SEC_DAEMON_AUTHENTICATION_METHODS =
 SEC_CLIENT_AUTHENTICATION_METHODS =
 SEC_PASSWORD_FILE =
+
+## Execute spool directory. - Verify that these directory's exist - or change to desired location
+EXECUTE=/var/condor/execute
+LOCK=/var/condor/lock
+LOG=<%= @logdir %>
+RUN=<%= @rundir %>
+SPOOL=<%= @spooldir %>
+
 
 ###### You should not need to make changes below here ########
 

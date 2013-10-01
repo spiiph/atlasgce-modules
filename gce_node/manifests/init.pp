@@ -36,6 +36,7 @@ class gce_node (
   $panda_cloud = undef,
   $panda_administrator_email = undef,
   $atlas_site = undef,
+  $condor_vmtype = 'cernvm-batch-node-2.7.2-x86_64',
   $debug = false
 ){
 
@@ -80,6 +81,7 @@ class gce_node (
       use_gsi_security => $condor_use_gsi,
       slots => $condor_slots,
       debug => $debug,
+      vmtype => $condor_vmtype
   }
 
   if $role == 'head' and $use_apf == true {
@@ -102,8 +104,8 @@ class gce_node (
     sysctl {'net.core.netdev_max_backlog': value => "30000" }
     sysctl {'net.ipv4.tcp_timestamps': value => "1" }
     sysctl {'net.ipv4.tcp_sack': value => "1" }
-  }
 
-  exec {'ip link set eth0 txqueuelen 10000': path => '/sbin' }
+    exec {'ip link set eth0 txqueuelen 10000': path => '/sbin' }
+  }
 
 }
