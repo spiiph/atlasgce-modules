@@ -7,6 +7,9 @@ fi
 export GLOBUS_FTP_CLIENT_GRIDFTP2=true
 
 <% end -%>
+## Fix for atlas software location disappearing from condor job environment
+export VO_ATLAS_SW_DIR=/cvmfs/atlas.cern.ch/repo/sw
+
 # Workaround for condor not setting $HOME for worker sessions.
 # voms-proxy-info requires this.
 if [[ -z "$HOME" ]] ; then
