@@ -46,7 +46,11 @@ class condor::client(
   $config = '/etc/condor/condor_config.local',
   $sysconfig = undef,
   $job_wrapper_in = undef,
-  $debug = undef
+  $logdir = '/var/log/condor',
+  $rundir = '/var/run/condor',
+  $spooldir = '/var/lib/condor/spool',
+  $debug = undef,
+  $vmtype
 ) inherits condor
 {
   if $job_wrapper_in != undef {
@@ -58,6 +62,12 @@ class condor::client(
     }
   }
 
+  $condor_config_val = $osfamily ? {
+    'cernvm' => '/opt/condor/bin/condor_config_val',
+    default  => '/usr/bin/condor_config_val',
+  }
+  
+  
   if $role == 'node' or $role == 'csnode' {
     # Create an user account for each condor slot
     $user_array = condor_user_array($slots)
@@ -69,7 +79,7 @@ class condor::client(
     group => 'root',
     mode => 0644,
     content => template("condor/condor_config.local.${role}.erb"),
-    require => Class['condor'],
+    require => [Class['condor'],File[$logdir],File[$rundir],File[$spooldir]],
   }
 
   if $password {
@@ -104,8 +114,9 @@ class condor::client(
       owner => 'root',
       group => 'root',
       mode => 0755,
-      source => 'puppet:///modules/condor/condor.init.d',
+      content => template("condor/condor.erb"),
       require => Class['condor'],
+      before => Service['condor'],
     }
   } else {
     if $password {
@@ -113,13 +124,39 @@ class condor::client(
     } else {
       $requires = []
     }
-    service { 'condor':
-      ensure => running,
-      enable => true,
-      subscribe => File[$config, $job_wrapper],
-      require => $requires,
-    }
   }
+  
+  service { 'condor':
+    ensure => running,
+    enable => true,
+    subscribe => File[$config, $job_wrapper],
+    require => $requires,
+  }
+
+  file { $logdir:
+    ensure => directory,
+    owner => $condor::user,
+    group => $condor::group,
+    mode => 0755,
+    require => [Group[$condor::group], User[$condor::user]],
+  }
+
+  file { $rundir:
+    ensure => directory,
+    owner => $condor::user,
+    group => $condor::group,
+    mode => 0755,
+    require => [Group[$condor::group], User[$condor::user]],
+  }
+
+  file { $spooldir:
+    ensure => directory,
+    owner => $condor::user,
+    group => $condor::group,
+    mode => 0755,
+    require => [Group[$condor::group], User[$condor::user]],
+  }
+  
 }
 
 define condor_user ($user = $name, $group = $name) {
@@ -139,4 +176,5 @@ define condor_user ($user = $name, $group = $name) {
     #message => "Created user and group for $user",
     #require => User[$user],
   #}
+
 }

@@ -5,8 +5,11 @@ fi
 
 <% if @use_gridftp2 -%>
 export GLOBUS_FTP_CLIENT_GRIDFTP2=true
-
 <% end -%>
+
+## fix for atlas software location disappearing from condor job environment
+export VO_ATLAS_SW_DIR=/cvmfs/atlas.cern.ch/repo/sw
+
 # Workaround for condor not setting $HOME for worker sessions.
 # voms-proxy-info requires this.
 if [[ -z "$HOME" ]] ; then
@@ -34,7 +37,9 @@ rm ~/.asetup
 # Site-specific variables (e.g. Frontier and Squid servers) are set based on
 # ATLAS_SITE_NAME.
 export ATLAS_SITE_NAME=<%= @atlas_site %>
-
 <% end -%>
-# This auto-setup should eventually become automatic
-source /cvmfs/atlas.cern.ch/repo/sw/local/bin/auto-setup
+
+# ATLAS_SITE_NAME. This auto-setup is only temporarily needed,
+# and will soon become automatic (I wonder when and how I will know?)
+. /cvmfs/atlas.cern.ch/repo/sw/local/bin/auto-setup
+
