@@ -46,7 +46,9 @@ class condor::client(
   $config = '/etc/condor/condor_config.local',
   $sysconfig = undef,
   $job_wrapper_in = undef,
-  $debug = undef
+  $vmtype = undef,
+  $cloud_type = undef,
+  $debug = undef,
 ) inherits condor
 {
   if $job_wrapper_in != undef {
@@ -97,28 +99,27 @@ class condor::client(
     require => Class['condor'],
   }
 
-  # Change the init.d script for the CloudScheduler nodes, but don't start
-  # the service
+  # Change the init.d script for the CloudScheduler nodes
   if $role == 'csnode' {
+    $condor_config_val = $osfamily ? {
+      'CernVM' => '/opt/condor/bin/condor_config_val',
+      default  => '/usr/bin/condor_config_val',
+    }
+
     file { '/etc/init.d/condor':
       owner => 'root',
       group => 'root',
       mode => 0755,
-      source => 'puppet:///modules/condor/condor.init.d',
+      content => template("condor/condor.init.d.erb"),
       require => Class['condor'],
+      before => Service['condor'],
     }
-  } else {
-    if $password {
-      $requires = [Exec[pool_password]]
-    } else {
-      $requires = []
-    }
-    service { 'condor':
-      ensure => running,
-      enable => true,
-      subscribe => File[$config, $job_wrapper],
-      require => $requires,
-    }
+  }
+
+  service { 'condor':
+    ensure => running,
+    enable => true,
+    subscribe => File[$config, $job_wrapper],
   }
 }
 
@@ -139,4 +140,5 @@ define condor_user ($user = $name, $group = $name) {
     #message => "Created user and group for $user",
     #require => User[$user],
   #}
+
 }
