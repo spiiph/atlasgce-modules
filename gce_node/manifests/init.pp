@@ -29,6 +29,7 @@ class gce_node (
   $condor_pool_password = undef,
   $condor_use_gsi = false,
   $condor_slots,
+  $condor_vmtype = undef,
   $use_xrootd = true,
   $xrootd_global_redirector = undef,
   $use_apf = true,
@@ -37,6 +38,7 @@ class gce_node (
   $panda_cloud = undef,
   $panda_administrator_email = undef,
   $atlas_site = undef,
+  $cloud_type = 'gce',
   $debug = false
 ){
 
@@ -80,6 +82,8 @@ class gce_node (
       password => $condor_pool_password,
       use_gsi_security => $condor_use_gsi,
       slots => $condor_slots,
+      vmtype => $condor_vmtype,
+      cloud_type => $cloud_type,
       debug => $debug,
   }
 
