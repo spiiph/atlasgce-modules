@@ -21,12 +21,14 @@
 # Modified for GCE: Henrik Öhman <ohman@cern.ch>
 
 class cvmfs::client(
-    $repositories,
-    $squidproxy = undef,
-    $quota = undef,
-    $debug = undef,
-    $local_conf = '/etc/cvmfs/default.local',
-    $fuse_conf = '/etc/fuse.conf'
+  $repositories,
+  $squidproxy = undef,
+  $quota = undef,
+  $debug = undef,
+  $local_conf = '/etc/cvmfs/default.local',
+  $domain_conf = '/etc/cvmfs/domain.d/cern.ch.local',
+  $fuse_conf = '/etc/fuse.conf',
+  $cvmfs_servers = undef
 ) inherits cvmfs
 {
   class { autofs::client:
@@ -50,5 +52,15 @@ class cvmfs::client(
     group   => 'root',
     mode    => 0644,
     notify  => Service[autofs],
+  }
+
+  if $cvmfs_servers != undef {
+    file { $domain_conf:
+      owner => 'root',
+      group => 'root',
+      mode => 0644,
+      content => template('cvmfs/cern.ch.local.erb'),
+      notify => Service[autofs],
+    }
   }
 }
