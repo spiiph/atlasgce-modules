@@ -27,10 +27,12 @@
 # clouds)
 
 class condor (
-    $user = 'condor',
-    $group = 'condor',
-    $homedir = '/var/lib/condor',
-    $logdir = '/var/log/condor'
+  $user = 'condor',
+  $group = 'condor',
+  $homedir = '/var/lib/condor',
+  $logdir = '/var/log/condor',
+  $rundir = '/var/run/condor',
+  $spooldir = "$homedir/spool",
 ){
   include packagerepos
 
@@ -58,7 +60,7 @@ class condor (
   }
 
   file { $homedir:
-    ensure => 'directory',
+    ensure => directory,
     owner => $user,
     group => $group,
     mode => 0755,
@@ -66,6 +68,22 @@ class condor (
   }
 
   file { $logdir:
+    ensure => directory,
+    owner => $user,
+    group => $group,
+    mode => 0755,
+    require => [Group[$group], User[$user]],
+  }
+
+  file { $rundir:
+    ensure => directory,
+    owner => $user,
+    group => $group,
+    mode => 0755,
+    require => [Group[$group], User[$user]],
+  }
+
+  file { $spooldir:
     ensure => directory,
     owner => $user,
     group => $group,
