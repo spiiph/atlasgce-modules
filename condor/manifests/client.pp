@@ -49,6 +49,7 @@ class condor::client(
   $vmtype = undef,
   $cloud_type = undef,
   $debug = undef,
+  $java_exec_in = undef
 ) inherits condor
 {
   if $job_wrapper_in != undef {
@@ -60,6 +61,15 @@ class condor::client(
     }
   }
 
+  if $java_exec_in != undef {
+    $java_exec = $java_exec_in
+  } else {
+    if $osfamily == 'CernVM' {
+      $java_exec = '/usr/lib/jvm/jre-1.6.0-openjdk.x86_64/bin/java'      
+    }
+  }
+
+  
   if $role == 'node' or $role == 'csnode' {
     # Create an user account for each condor slot
     $user_array = condor_user_array($slots)
