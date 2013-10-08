@@ -87,6 +87,10 @@ class gce_node (
       debug => $debug,
   }
 
+  if $osfamily == 'CernVM' {
+    class { 'cernvm': }
+  }
+
   if $role == 'head' and $use_apf == true {
     class { 'apf::client':
       panda_site => $panda_site,
@@ -101,7 +105,7 @@ class gce_node (
 
   if $role == 'csnode' {
     sysctl {'net.core.rmem_max': value => "16777216" }
-    sysctl {'net.core.wmem_max': value => "16777216" } 
+    sysctl {'net.core.wmem_max': value => "16777216" }
     sysctl {'net.ipv4.tcp_rmem': value => "4096 87380 16777216" }
     sysctl {'net.ipv4.tcp_wmem': value => "4096 65536 16777216" }
     sysctl {'net.core.netdev_max_backlog': value => "30000" }
