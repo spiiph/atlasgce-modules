@@ -9,11 +9,11 @@ The modules have been tested on the [CentOS 6](http://www.centos.org/) operating
 
 Work is also in progress to partially support [CernVM](http://cernvm.cern.ch/). The SLC5 based CernVM 2.6 and 2.7 will have support for all modules except [packagerepos](https://github.com/spiiph/atlasgce-modules/tree/master/yumrepos) (due to lack of [Conary](http://wiki.rpath.com/wiki/Conary) support in Puppet) and [cvmfs](https://github.com/spiiph/atlasgce-modules/tree/master/autofs) (which is already configured during the CernVM contextualization). [μCernVM](http://cernvm.cern.ch/portal/ucernvm) will be SLC6 based and use RPM for package management and should be fully supported.
 
-[Debian](http://www.debian.org/) based systems are not supported but can be implemented upon request.
+[Debian](http://www.debian.org/) based systems are not supported but support can be added.
 
 ## Cloud support
 
-These modules have been developed for GCE but support for other clouds can be impemented upon request.
+These modules have been developed for GCE but support for other clouds can be impemented.
 
 # Functionality
 
