@@ -30,6 +30,7 @@ class gce_node (
   $condor_use_gsi = false,
   $condor_slots,
   $condor_vmtype = undef,
+  $condor_homedir = undef,
   $use_xrootd = true,
   $xrootd_global_redirector = undef,
   $use_apf = true,
@@ -75,7 +76,40 @@ class gce_node (
     }
   }
 
-  class { 'condor::client':
+  if $role == 'csnode' {
+
+    class {'condor':
+      homedir => $condor_homedir,
+    }
+    
+    $ephemeral_device = $cloud_type ? {
+      'OpenStack' => 'LABEL=ephemeral0',
+      'Nimbus'    => 'LABEL=blankpartition0',
+      default     => 'LABEL=ephemeral0',
+    }
+
+    $ephemeral_fstype = $cloud_type ? {
+      'OpenStack' => 'ext4',
+      'Nimbus'    => 'ext2',
+      default     => 'ext4',
+    }
+
+    if $cloud_type == 'Nimbus' or $cloud_type == 'OpenStack' {
+      mount {$condor_homedir:
+        ensure  => 'mounted',
+        device  => $ephemeral_device,
+        fstype  => $ephemeral_fstype,
+        options => 'noatime,noauto',
+        dump    => 1,
+        pass    => 0,
+        require => File[$condor::homedir],
+        before  => Class['condor::client'],
+      }
+    }
+    
+  }
+
+  class {'condor::client':
       head => $head,
       role => $role,
       password => $condor_pool_password,
@@ -110,8 +144,8 @@ class gce_node (
     sysctl {'net.ipv4.tcp_timestamps': value => "1" }
     sysctl {'net.ipv4.tcp_sack': value => "1" }
 
+    exec {'ip link set eth0 txqueuelen 10000': path => '/sbin' }
+  
   }
 
-  exec {'ip link set eth0 txqueuelen 10000': path => '/sbin' }
-  
 }
