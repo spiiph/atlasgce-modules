@@ -4,7 +4,13 @@
 VMType = "<%= @vmtype %>"
 
 ##  What machine is your central manager? - will be contextualized by Cloud Scheduler
-CONDOR_HOST=your.central.manager
+<% if @head -%>
+CONDOR_HOST=<%= @head %>
+<% elif @central_manager -%>
+CONDOR_HOST=<%= @central_manager %>
+<% else -%>
+CONDOR_HOST=UNCONFIGURED
+<% end -%>
 
 SEC_DAEMON_AUTHENTICATION =
 SEC_DAEMON_AUTHENTICATION_METHODS =
