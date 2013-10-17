@@ -47,7 +47,6 @@ class condor::client(
   $sysconfig = undef,
   $job_wrapper_in = undef,
   $vmtype = undef,
-  $cloud_type = undef,
   $debug = undef,
 ) inherits condor
 {
@@ -114,13 +113,26 @@ class condor::client(
       require => Class['condor'],
       before => Service['condor'],
     }
+    service { 'condor':
+      ensure => running,
+      enable => true,
+      subscribe => File[$config, $job_wrapper],
+      require => File['/etc/init.d/condor'],
+    }
+  } else {
+    if $password {
+      $requires = [Exec[pool_password]]
+    } else {
+      $requires = []
+    }
+    service { 'condor':
+      ensure => running,
+      enable => true,
+      subscribe => File[$config, $_job_wrapper],
+      require => $requires,
+    }
   }
 
-  service { 'condor':
-    ensure => running,
-    enable => true,
-    subscribe => File[$config, $job_wrapper],
-  }
 }
 
 define condor_user ($user = $name, $group = $name) {

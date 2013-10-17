@@ -38,8 +38,7 @@ class gce_node (
   $panda_cloud = undef,
   $panda_administrator_email = undef,
   $atlas_site = undef,
-  $cloud_type = 'gce',
-  $debug = false
+  $debug = false,
 ){
 
   class { 'gce_node::packages':
@@ -83,7 +82,6 @@ class gce_node (
       use_gsi_security => $condor_use_gsi,
       slots => $condor_slots,
       vmtype => $condor_vmtype,
-      cloud_type => $cloud_type,
       debug => $debug,
   }
 
@@ -112,6 +110,8 @@ class gce_node (
     sysctl {'net.ipv4.tcp_timestamps': value => "1" }
     sysctl {'net.ipv4.tcp_sack': value => "1" }
 
-    exec {'ip link set eth0 txqueuelen 10000': path => '/sbin' }
   }
+
+  exec {'ip link set eth0 txqueuelen 10000': path => '/sbin' }
+  
 }
