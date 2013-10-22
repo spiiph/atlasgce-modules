@@ -5,6 +5,9 @@ fi
 
 export GLOBUS_FTP_CLIENT_GRIDFTP2=true
 
+## fix for atlas software location disappearing from condor job environment
+export VO_ATLAS_SW_DIR=/cvmfs/atlas.cern.ch/repo/sw
+
 ## Set up grid environment:
 export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase
 source $ATLAS_LOCAL_ROOT_BASE/user/atlasLocalSetup.sh --quiet
@@ -28,5 +31,3 @@ rm ~/.asetup
 # and will soon become automatic (I wonder when and how I will know?)
 . /cvmfs/atlas.cern.ch/repo/sw/local/bin/auto-setup
 
-## fix for atlas software location disappearing from condor job environment
-export VO_ATLAS_SW_DIR
