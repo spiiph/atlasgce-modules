@@ -60,6 +60,7 @@ class cvmfs::client(
     group => 'root',
     mode => 755,
     ensure => directory,
+    require => Class['gce_node::packages'],
     before => File[$domain_conf],
   }
   
