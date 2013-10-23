@@ -54,7 +54,7 @@ class gce_node (
     class { 'cvmfs::client':
       repositories => 'atlas.cern.ch,atlas-condb.cern.ch,grid.cern.ch',
       squidproxy => 'http://chrysaor.westgrid.ca:3128;http://cernvm-webfs.atlas-canada.ca:3128',
-      quota => 5000,
+      quota => 10000,
       debug => $debug,
       cvmfs_servers => $cvmfs_domain_servers,
     }
