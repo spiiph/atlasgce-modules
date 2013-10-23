@@ -26,6 +26,7 @@ class cvmfs::client(
   $quota = undef,
   $debug = undef,
   $local_conf = '/etc/cvmfs/default.local',
+  $domain_dir = '/etc/cvmfs/domain.d',
   $domain_conf = '/etc/cvmfs/domain.d/cern.ch.local',
   $fuse_conf = '/etc/fuse.conf',
   $cvmfs_servers = undef
@@ -54,6 +55,14 @@ class cvmfs::client(
     notify  => Service[autofs],
   }
 
+  file {$domain_dir:
+    owner => 'root',
+    group => 'root',
+    mode => 755,
+    ensure => directory,
+    before => File[$domain_conf],
+  }
+  
   file { $domain_conf:
     owner => 'root',
     group => 'root',
