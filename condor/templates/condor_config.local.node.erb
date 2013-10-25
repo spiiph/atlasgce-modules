@@ -12,6 +12,11 @@ CLAIM_WORKLIFE = 3600
 DAEMON_LIST = MASTER, STARTD, SHARED_PORT
 UID_DOMAIN = <%= @domain %>
 
+## Point to the java executable.
+<% if @java_exec -%>
+JAVA = <%= @java_exec %>
+<% end -%>
+
 ### Networking
 # If @collectors is defined, we use multiple collectors and need to randomize
 # the collector port number

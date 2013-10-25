@@ -18,6 +18,11 @@ LOG=<%= @logdir %>
 RUN=<%= @rundir %>
 SPOOL=<%= @spooldir %>
 
+## Point to the java executable.
+<% if @java_exec -%>
+JAVA = <%= @java_exec %>
+<% end -%>
+
 
 ###### You should not need to make changes below here ########
 
