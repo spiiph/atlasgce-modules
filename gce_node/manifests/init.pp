@@ -26,21 +26,32 @@ class gce_node (
   $use_cvmfs = true,
   $cvmfs_domain_servers = undef,
   $cvmfs_quota = 20000,
+  $cvmfs_cache = '/var/cache/cvmfs2',
   $condor_pool_password = undef,
   $condor_use_gsi = false,
   $condor_slots,
   $condor_vmtype = undef,
+  $condor_homedir = '/var/lib/condor',
   $use_xrootd = true,
   $xrootd_global_redirector = undef,
+  $xrootd_scratch = '/data/scratch',
   $use_apf = true,
+  $apf_homedir = '/var/lib/apf',
   $panda_site = undef,
   $panda_queue = undef,
   $panda_cloud = undef,
   $panda_administrator_email = undef,
   $atlas_site = undef,
-  $cloud_type = 'gce',
+  $cloud_type_in = undef,
   $debug = false
 ){
+
+  # Use cloud_type fact if cloud_type is not specified
+  if $cloud_type_in != undef {
+    $cloud_type == $cloud_type_in
+  } else {
+    $cloud_type == $::cloud_type
+  }
 
   class { 'gce_node::packages':
     install_32bit_packages => false,
@@ -55,7 +66,15 @@ class gce_node (
     },
   }
 
-  class {'gce_node::clock_setup':
+  class {'gce_node::clock_setup': }
+
+  class { 'gce_node::ephemeral':
+    cloud_type => $cloud_type,
+    role => $role,
+    cvmfs_cache => $cvmfs_cache,
+    condor_homedir => $condor_homedir,
+    apf_homedir => $apf_homedir,
+    xrootd_scratch => $xrootd_scratch,
   }
 
   if $use_cvmfs == true {
@@ -63,6 +82,7 @@ class gce_node (
       repositories => 'atlas.cern.ch,atlas-condb.cern.ch,grid.cern.ch',
       cvmfs_servers => $cvmfs_domain_servers,
       quota => $cvmfs_quota,
+      cachedir => $cvmfs_cache,
       debug => $debug,
     }
   }
@@ -72,6 +92,7 @@ class gce_node (
       redirector => $head,
       role => $role,
       global_redirector => $xrootd_global_redirector,
+      oss_localroot => $xrootd_scratch,
       debug => $debug,
     }
   }
@@ -84,6 +105,7 @@ class gce_node (
       slots => $condor_slots,
       vmtype => $condor_vmtype,
       cloud_type => $cloud_type,
+      homedir => $condor_homedir,
       debug => $debug,
   }
 
@@ -99,6 +121,7 @@ class gce_node (
       factory_id => 'atlasgce_factory',
       admin_email => $panda_administrator_email,
       http_server_address => gce_metadata_query('instance/network-interfaces/0/access-configs/0/external-ip'),
+      homedir => $apf_homedir,
       debug => $debug,
     }
   }
