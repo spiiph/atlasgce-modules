@@ -40,7 +40,8 @@ class cvmfs::client(
     group => 'root',
     mode => 0644,
     content => template('cvmfs/default.local.erb'),
-    notify => Service[autofs],
+    notify => Service['autofs'],
+    require => Class['cvmfs'],
   }
 
   # Clobber the /etc/fuse.conf, hopefully no
@@ -51,7 +52,7 @@ class cvmfs::client(
     owner   => 'root',
     group   => 'root',
     mode    => 0644,
-    notify  => Service[autofs],
+    notify  => Service['autofs'],
   }
 
   if $cvmfs_servers != undef {
@@ -60,7 +61,8 @@ class cvmfs::client(
       group => 'root',
       mode => 0644,
       content => template('cvmfs/cern.ch.local.erb'),
-      notify => Service[autofs],
+      notify => Service['autofs'],
+      require => Class['cvmfs'],
     }
   }
 }
