@@ -23,6 +23,7 @@
 class gce_node (
   $head,
   $role,
+  $use_ephemeral = true,
   $use_cvmfs = true,
   $cvmfs_domain_servers = undef,
   $cvmfs_quota = 20000,
@@ -68,13 +69,15 @@ class gce_node (
 
   class {'gce_node::clock_setup': }
 
-  class { 'gce_node::ephemeral':
-    cloud_type => $cloud_type,
-    role => $role,
-    cvmfs_cache => $cvmfs_cache,
-    condor_homedir => $condor_homedir,
-    apf_homedir => $apf_homedir,
-    xrootd_scratch => $xrootd_scratch,
+  if $use_ephemeral {
+    class { 'gce_node::ephemeral':
+      cloud_type => $cloud_type,
+      role => $role,
+      cvmfs_cache => $cvmfs_cache,
+      condor_homedir => $condor_homedir,
+      apf_homedir => $apf_homedir,
+      xrootd_scratch => $xrootd_scratch,
+    }
   }
 
   if $use_cvmfs == true {
