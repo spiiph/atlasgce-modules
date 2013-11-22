@@ -28,6 +28,7 @@ class gce_node::ephemeral (
     } else {
       mount_ephemeral { $xrootd_scratch:
         device => '/dev/vg00/lv_xrootd',
+      }
     }
   # Mounts for Nimbus
   } elsif $cloud_type == 'Nimbus' {

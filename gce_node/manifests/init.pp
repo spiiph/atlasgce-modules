@@ -49,9 +49,9 @@ class gce_node (
 
   # Use cloud_type fact if cloud_type is not specified
   if $cloud_type_in != undef {
-    $cloud_type == $cloud_type_in
+    $cloud_type = $cloud_type_in
   } else {
-    $cloud_type == $::cloud_type
+    $cloud_type = $::cloud_type
   }
 
   class { 'gce_node::packages':
@@ -81,11 +81,14 @@ class gce_node (
   }
 
   if $use_cvmfs == true {
+    class {'cvmfs':
+      cachedir => $cvmfs_cache,
+    }  
+
     class { 'cvmfs::client':
       repositories => 'atlas.cern.ch,atlas-condb.cern.ch,grid.cern.ch',
       cvmfs_servers => $cvmfs_domain_servers,
       quota => $cvmfs_quota,
-      cachedir => $cvmfs_cache,
       debug => $debug,
     }
   }
@@ -100,6 +103,10 @@ class gce_node (
     }
   }
 
+  class { 'condor':
+    homedir => $condor_homedir,
+  }
+  
   class { 'condor::client':
       head => $head,
       role => $role,
@@ -108,7 +115,6 @@ class gce_node (
       slots => $condor_slots,
       vmtype => $condor_vmtype,
       cloud_type => $cloud_type,
-      homedir => $condor_homedir,
       debug => $debug,
   }
 
