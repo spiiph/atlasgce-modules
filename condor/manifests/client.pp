@@ -55,7 +55,7 @@ class condor::client(
   if $job_wrapper_in != undef {
       $job_wrapper = $job_wrapper_in
   } else {
-    $job_wrapper = $osfamily ? {
+    $job_wrapper = $osvariant ? {
       'CernVM' => '/opt/condor/libexec/jobwrapper.sh',
       default => '/usr/libexec/condor/jobwrapper.sh',
     }
@@ -64,7 +64,7 @@ class condor::client(
   if $java_exec_in != undef {
     $java_exec = $java_exec_in
   } else {
-    if $osfamily == 'CernVM' {
+    if $osvariant == 'CernVM' {
       $java_exec = '/usr/lib/jvm/jre-1.6.0-openjdk.x86_64/bin/java'      
     }
   }
@@ -111,7 +111,7 @@ class condor::client(
 
   # Change the init.d script for the CloudScheduler nodes
   if $role == 'csnode' {
-    $condor_config_val = $osfamily ? {
+    $condor_config_val = $osvariant ? {
       'CernVM' => '/opt/condor/bin/condor_config_val',
       default  => '/usr/bin/condor_config_val',
     }

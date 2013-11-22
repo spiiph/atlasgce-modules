@@ -118,7 +118,7 @@ class gce_node (
       debug => $debug,
   }
 
-  if $osfamily == 'CernVM' {
+  if $osvariant == 'CernVM' {
     class { 'cernvm': }
   }
 

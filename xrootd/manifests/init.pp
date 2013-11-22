@@ -35,7 +35,7 @@ class xrootd (
 ){
   include packagerepos
 
-  if $osfamily != 'CernVM' {
+  if $osvariant != 'CernVM' {
     package { ['xrootd', 'xrootd-client']:
       ensure => installed,
       require => Class[Packagerepos]

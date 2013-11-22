@@ -1,4 +1,4 @@
-Facter.add("osfamily") do
+Facter.add("osvariant") do
   has_weight 100
   setcode do
     # Check for existance of '/etc/distro-release' and check if it's CernVM

@@ -36,7 +36,7 @@ class condor (
 ){
   include packagerepos
 
-  if $osfamily != 'CernVM' {
+  if $osvariant != 'CernVM' {
     package { 'condor':
       ensure => installed,
       require => Class[Packagerepos]

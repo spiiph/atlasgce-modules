@@ -18,7 +18,7 @@ class autofs
 {
   include packagerepos
 
-  if $osfamily != 'CernVM' {
+  if $osvariant != 'CernVM' {
     package { 'autofs':
       ensure => installed,
       require => Class[Packagerepos]

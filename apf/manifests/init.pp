@@ -28,7 +28,7 @@ class apf (
 ){
   include packagerepos
 
-  if $osfamily != 'CernVM' {
+  if $osvariant != 'CernVM' {
     package { 'panda-autopyfactory':
       ensure => installed,
       require => Class[Packagerepos]
