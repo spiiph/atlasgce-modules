@@ -145,5 +145,7 @@ class gce_node (
     sysctl {'net.ipv4.tcp_sack': value => "1" }
 
     exec {'ip link set eth0 txqueuelen 10000': path => '/sbin' }
+
+    class {'shoal':}
   }
 }

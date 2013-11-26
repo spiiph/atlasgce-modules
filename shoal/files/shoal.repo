@@ -1,0 +1,5 @@
+[shoalrepo]
+name=Shoal Repository
+baseurl=http://shoal.heprc.uvic.ca/repo
+enabled=1
+gpgcheck=0
