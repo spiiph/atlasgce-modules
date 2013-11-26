@@ -107,5 +107,3 @@ class packagerepos::yumrepos {
       protect  => 1;
   }
 }
-
-class { 'yumrepos': }
