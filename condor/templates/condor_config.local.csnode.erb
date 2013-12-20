@@ -32,9 +32,8 @@ JAVA = <%= @java_exec %>
 
 
 ###### You should not need to make changes below here ########
-
-HOSTALLOW_WRITE = $(FULL_HOSTNAME), $(CONDOR_HOST)
-ALLOW_WRITE = $(FULL_HOSTNAME), $(CONDOR_HOST)
+HOSTALLOW_WRITE = $(IP_ADDRESS), $(FULL_HOSTNAME), $(CONDOR_HOST)
+ALLOW_WRITE = $(IP_ADDRESS), $(FULL_HOSTNAME), $(CONDOR_HOST)
 
 ##  Enable CCB for nodes behind NAT
 CCB_ADDRESS = $(CONDOR_HOST)

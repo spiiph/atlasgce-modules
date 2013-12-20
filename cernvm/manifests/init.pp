@@ -26,7 +26,7 @@ class cernvm (
   $siteconf     = '/etc/cernvm/site.conf'
 )
 {
-  if $osfamily == 'CernVM' {
+  if $osvariant == 'CernVM' {
     file { $confdir:
       ensure => directory,
       mode   => 755,

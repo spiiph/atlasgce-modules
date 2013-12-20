@@ -4,7 +4,7 @@ class gce_node::packages (
 )
 {
   # Don't know how to handle conary packages, so don't install any for CernVM
-  if $osfamily != 'CernVM' {
+  if $osvariant != 'CernVM' {
     # Required noarch packages
     package { ['automake', 'autoconf']:
       ensure => installed,
